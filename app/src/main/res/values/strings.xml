@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <string name="timetable_for_hse_fe">Timetable for HSE FE</string>
+<string name="register">Регистрация студента!</string>
+    <string name="pass_label">Введите пароль:</string>
+<string name="last_name_label">Введите фамилию:</string>
+    <string name="first_name_label">Введите имя:</string>
+    <string name="pat_name_label">Введите отчество:</string>
+    <string name="register_button">Зарегистрироваться!</string>
+
+    <string name="time1">9:00</string>
+    <string name="time2">11:00</string>
+    <string name="time3">15:00</string>
+    <string name="time4">17:00</string>
+    <string name="time5">19:00</string>
+    <string name="time6">21:00</string>
+    <string name="profile_label">Ваш профиль</string>
+    <string name="your_last_name_label">Фамилия:</string>
+    <string name="your_first_name_label">Имя:</string>
+    <string name="your_pat_name_label">Отчество:</string>
+    <string name="your_mail_label">Корпоративная почта:</string>
+    <string name="your_dormitory_label">Адрес общежития:</string>
+    <string name="change_pass_label">Изменить пароль:</string>
+    <string name="save_button">Сохранить изменения</string>
+
+
+    <string name="settings_label">Настройки</string>
+    <string name="nots">Уведомления </string>
+    <string name="notifications_time_label">Выберите за какое количество минут хотите получать уведомления о стирке:</string>
+
+    <string name="choose_dormitory_label">Выберите адрес общежития:</string>
+
+
+
+    <string name="reset_slot_button">Отменить \n запись</string>
+    <string name="im_student">Я студент!</string>
+    <string name="not_registered">Я не зарегистрирован!</string>
+    <string name="im_registered">У вас уже есть аккаунт?</string>
+
+    <string name="code_button">Отправить код</string>
+
+    <string name="forgot_pass">Забыли пароль?</string>
+    <string name="im_watchman">Я вахтер!</string>
+    <string name="login_button">Войти!</string>
+    <string name="login_watchman_label">Войти в аккаунт вахтера:</string>
+    <string name="mail_label">Введите корпоративную почту:</string>
+    <string name="login_label">Войти в аккаунт студента:</string>
+    <string name="laundry_App">PHSE Laundry</string>
+    <string name="mail">Корпоративная почта</string>
+    <string name="chosen_slot">"Вы записаны на сегодня на \n 18:00-20:00!"</string>
+</resources>

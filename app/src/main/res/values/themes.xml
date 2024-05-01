@@ -1,0 +1,34 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Demo_project" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+    </style>
+
+    <style name="Theme.Demo_project" parent="Base.Theme.Demo_project" />
+
+    <style name="Theme.Base_project" parent="Base.Theme.Demo_project">
+        <item name="colorPrimary">#003399</item>
+        <item name="colorPrimaryVariant">#011F5A</item>
+        <item name="colorSecondary">#4080ff</item>
+        <item name="colorSecondaryVariant">#0C5DFD</item>
+
+    </style>
+    <style name="ActionBarVariantStyle" parent="Base.Theme.Demo_project">
+        <item name="colorPrimary">#003399</item>
+        <item name="colorPrimaryVariant">#011F5A</item>
+        <item name="colorSecondary">#4080ff</item>
+        <item name="colorSecondaryVariant">#0C5DFD</item>
+        <item name="android:background">#003399</item>
+    </style>
+    <style name="MyTextStyle" parent="Theme.Base_project">
+        <item name="android:textColor">@color/colorSecondary</item>
+    </style>
+    <style name="MyLabelStyle" parent="MyTextStyle">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="dark_button" >
+        <item name="android:backgroundTint">@color/colorPrimaryVariant</item>
+    </style>
+</resources>
