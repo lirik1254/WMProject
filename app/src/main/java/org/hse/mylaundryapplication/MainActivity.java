@@ -40,13 +40,14 @@ public class MainActivity extends AppCompatActivity {
     private View registration_button, check_code_button, send_code;
     boolean isShowPicture = true;
     private String CODE = "1234567890098765";
+
     public static boolean isMessageSend = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_student);
         init();
-
+        System.out.println("Хуй хуй");
         showPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
