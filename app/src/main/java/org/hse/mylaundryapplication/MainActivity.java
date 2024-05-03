@@ -3,6 +3,7 @@ package org.hse.mylaundryapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
@@ -17,9 +18,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -35,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText last_name, first_name, pat_name, mail, password, confirm_password, code;
     private ImageButton showPassword;
-    private DatabaseReference WMDataBase;
+    private static DatabaseReference WMDataBase;
     private String USER_KEY = "Users"; // По сути название таблицы в базе данных WMDataBase
     private View registration_button, check_code_button, send_code;
     boolean isShowPicture = true;
+    boolean isConfirmMail = false;
+    boolean isConfirmPasswords = false;
     private String CODE = "1234567890098765";
+    static ArrayList<Users> listData = new ArrayList<>();
 
     public static boolean isMessageSend = false;
     @Override
@@ -47,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_student);
         init();
-        System.out.println("Хуй хуй");
+        getDataFromDB();
         showPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,21 +77,28 @@ public class MainActivity extends AppCompatActivity {
         registration_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                check_password();
-                String first_name_text = first_name.getText().toString();
-                String last_name_text = last_name.getText().toString();
-                String pat_name_text = pat_name.getText().toString();
-                String mail_text = replacePointComma(mail.getText().toString());
-                String password_text = password.getText().toString();
-                Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text);
-                WMDataBase.child(mail_text).setValue(newUser);
+                if (check_password() && isConfirmMail) {
+                    String first_name_text = first_name.getText().toString();
+                    String last_name_text = last_name.getText().toString();
+                    String pat_name_text = pat_name.getText().toString();
+                    String mail_text = replacePointComma(mail.getText().toString());
+                    String password_text = password.getText().toString();
+                    Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text, mail_text);
+                    WMDataBase.child(mail_text).setValue(newUser);
+                    Toast.makeText(getApplicationContext(), "Регистрация прошла успешно!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(MainActivity.this, authorisation.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Сначала подтвердите почту", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
         send_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mailcheck()) {
+                if (mailcheck() && checkRegistration(replacePointComma(mail.getText().toString()))) {
                     Log.d("code", new SendEmailTask().execute("kvshulzhik@edu.hse.ru").toString());
                 }
             }
@@ -116,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     check_code_button.setEnabled(false);
                     send_code.setEnabled(false);
                     Toast.makeText(getApplicationContext(), "Почта подтверждена!", Toast.LENGTH_LONG).show();
+                    isConfirmMail = true;
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Неверно введен код!", Toast.LENGTH_LONG).show();
@@ -141,17 +159,20 @@ public class MainActivity extends AppCompatActivity {
         check_code_button = findViewById(R.id.check_code_button);
     }
 
-    private void check_password () {
+    private boolean check_password () {
         if (password.getText().toString().length() < 8) {
             Toast.makeText(getApplicationContext(), "Длина пароля должна быть не меньше 8 символов!", Toast.LENGTH_LONG).show();
             password.setText("");
             confirm_password.setText("");
+            return false;
         }
         else if (!password.getText().toString().equals(confirm_password.getText().toString())) {
             Toast.makeText(getApplicationContext(), "Пароли не совпадают!", Toast.LENGTH_LONG).show();
             password.setText("");
             confirm_password.setText("");
+            return false;
         }
+        return true;
     }
 
     private boolean mailcheck () {
@@ -168,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private String replacePointComma(String mail) {
+    public static String replacePointComma(String mail) {
         if (mail.substring(mail.length() - 10).contains(",")) {
             String lastElevenChars = mail.substring(mail.length() - 10);
             lastElevenChars = lastElevenChars.replace(',', '.');
@@ -229,5 +250,36 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             Log.d("message","sending");
         }
+    }
+    public static void getDataFromDB() {
+        ValueEventListener vListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                if (listData.size() > 0)
+                    listData.clear();
+                for(DataSnapshot ds: datasnapshot.getChildren()) {
+                    Users user = ds.getValue(Users.class);
+                    assert user != null;
+                    listData.add(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        WMDataBase.addValueEventListener(vListener);
+    }
+
+    public boolean checkRegistration(String mail) {
+        for (Users user : listData) {
+            if (user.mail.equals(mail)){
+                Toast.makeText(getApplicationContext(), "Такой пользователь уже зарегистрирован в системе!", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
+        return true;
     }
 }
