@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -16,15 +15,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -55,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration_student);
+        setContentView(R.layout.registration_student_layout);
         init();
         getDataFromDB();
         showPassword.setOnClickListener(new View.OnClickListener() {
@@ -83,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
                     String pat_name_text = pat_name.getText().toString();
                     String mail_text = replacePointComma(mail.getText().toString());
                     String password_text = password.getText().toString();
-                    Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text, mail_text);
+                    Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text, mail_text, 1);
                     WMDataBase.child(mail_text).setValue(newUser);
                     Toast.makeText(getApplicationContext(), "Регистрация прошла успешно!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(MainActivity.this, authorisation.class);
+                    Intent intent = new Intent(MainActivity.this, AuthorisationActivity.class);
                     startActivity(intent);
                 }
                 else {

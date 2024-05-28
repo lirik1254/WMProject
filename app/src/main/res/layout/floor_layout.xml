@@ -20,17 +20,17 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/start"
+                android:id="@+id/floor"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                app:layout_constraintBottom_toTopOf="@id/end"
+                app:layout_constraintBottom_toTopOf="@id/floor_text"
                 android:textSize="40sp"
                 android:layout_margin="7dp"
                 tools:text="3" />
 
             <TextView
-                android:id="@+id/end"
+                android:id="@+id/floor_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/time_layout"
@@ -60,14 +60,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/time1"
                     android:layout_weight="1"
-                    android:layout_margin="5dp"
+                    android:layout_margin="2dp"
                     />
                 <Button
                     android:id="@+id/time_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time2"
-                    android:layout_margin="5dp"
+                    android:layout_margin="2dp"
                     android:layout_weight="1"
                     />
                 <Button
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time3"
-                    android:layout_margin="5dp"
+                    android:layout_margin="2dp"
                     android:layout_weight="1"
                     />
             </TableRow>
@@ -87,14 +87,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/time4"
                     android:layout_weight="1"
-                    android:layout_margin="5dp"
+                    android:layout_margin="2dp"
                     />
                 <Button
                     android:id="@+id/time_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time5"
-                    android:layout_margin="5dp"
+                    android:layout_margin="2dp"
                     android:layout_weight="1"
                     />
                 <Button
@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time6"
-                    android:layout_margin="5dp"
+                    android:layout_margin="2dp"
                     android:layout_weight="1"
                     />
             </TableRow>

@@ -28,7 +28,7 @@
         android:layout_margin="5dp"
         />
     <Button
-        android:id="@+id/time_1"
+        android:id="@+id/reset_chosen_slot"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/reset_slot_button"

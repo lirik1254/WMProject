@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class authorisation extends AppCompatActivity {
+public class AuthorisationActivity extends AppCompatActivity {
     EditText mail, password;
     View loginButton;
     ImageButton showPassword;
@@ -18,7 +18,7 @@ public class authorisation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_student);
+        setContentView(R.layout.login_student_layout);
         MainActivity.getDataFromDB();
         init();
 
@@ -28,7 +28,7 @@ public class authorisation extends AppCompatActivity {
                 if (loginPasswordCheck())
                 {
                     Toast.makeText(getApplicationContext(), "Вы успешно авторизованы!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(authorisation.this, slots.class);
+                    Intent intent = new Intent(AuthorisationActivity.this, SlotsActivity.class);
                     startActivity(intent);
                 }
                 else {
