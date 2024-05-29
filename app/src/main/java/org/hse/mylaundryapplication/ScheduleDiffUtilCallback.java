@@ -24,8 +24,8 @@ public class ScheduleDiffUtilCallback extends DiffUtil.Callback {
      @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
         ScheduleItem oldScheduleItem = oldlist.get(oldItemPosition);
-        ScheduleItem newSceduleItem = newlist.get(newItemPosition);
-        return oldScheduleItem.getFloor() == newSceduleItem.getFloor();
+        ScheduleItem newScheduleItem = newlist.get(newItemPosition);
+        return oldScheduleItem.getFloor() == newScheduleItem.getFloor();
      }
      @Override
     public boolean areContentsTheSame(int  oldItemPosition, int newItemPosition ){
@@ -34,7 +34,13 @@ public class ScheduleDiffUtilCallback extends DiffUtil.Callback {
          ScheduleItem newScheduleItem = newlist.get(newItemPosition);
 
          return
-                 (oldScheduleItem.getFloor() == newScheduleItem.getFloor());
+                 (oldScheduleItem.getFloor() == newScheduleItem.getFloor())&&
+                         oldScheduleItem.getTime1() == newScheduleItem.getTime1() &&
+                         oldScheduleItem.getTime2() == newScheduleItem.getTime2() &&
+                         oldScheduleItem.getTime3() == newScheduleItem.getTime3() &&
+                         oldScheduleItem.getTime4() == newScheduleItem.getTime4() &&
+                         oldScheduleItem.getTime5() == newScheduleItem.getTime5() &&
+                         oldScheduleItem.getTime6() == newScheduleItem.getTime6() ;
 
      }
 

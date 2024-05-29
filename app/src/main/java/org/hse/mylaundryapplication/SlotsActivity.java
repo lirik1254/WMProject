@@ -159,7 +159,7 @@ public class SlotsActivity extends AppCompatActivity {
     }
 
     private static void initData(List<ScheduleItem> dv) {
-        adapter.clear();
+       // adapter.clear();
         adapter.setDataList(dv);
     }
     private void onScheduleItemClick(ScheduleItem scheduleItem) {
@@ -360,9 +360,9 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                         if (time_1.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_1.getText().toString(), floor.getText().toString())) {
                             Log.d("MYGOT", "it is available");
+                            chooseSlot((String) floor.getText(), (String) time_1.getText());
                             // Действия, если цвет фона совпадает с colorToCompare
                         } else {
-                            chooseSlot((String) floor.getText(), (String) time_1.getText());
                             Log.d("MYGOT", "it isnt available");
                         }}
             });
@@ -375,9 +375,9 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                     if (time_2.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_2.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
+                        chooseSlot((String) floor.getText(), (String) time_2.getText());
                         // Действия, если цвет фона совпадает с colorToCompare
                     } else {
-                        chooseSlot((String) floor.getText(), (String) time_1.getText());
                         Log.d("MYGOT", "it isnt available");
                     }}
             });
@@ -390,6 +390,7 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                     if ( time_3.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_3.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
+                        chooseSlot((String) floor.getText(), (String) time_3.getText());
                         // Действия, если цвет фона совпадает с colorToCompare
                     } else {
                         chooseSlot((String) floor.getText(), (String) time_1.getText());
@@ -405,9 +406,9 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                     if (time_4.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_4.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
+                        chooseSlot((String) floor.getText(), (String) time_4.getText());
                         // Действия, если цвет фона совпадает с colorToCompare
                     } else {
-                        chooseSlot((String) floor.getText(), (String) time_1.getText());
                         Log.d("MYGOT", "it isnt available");
                     }}
             });
@@ -420,9 +421,9 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                     if ( time_5.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_5.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
+                        chooseSlot((String) floor.getText(), (String) time_5.getText());
                         // Действия, если цвет фона совпадает с colorToCompare
                     } else {
-                        chooseSlot((String) floor.getText(), (String) time_1.getText());
                         Log.d("MYGOT", "it isnt available");
                     }}
             });
@@ -435,9 +436,9 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                     if ( time_6.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_6.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
+                        chooseSlot((String) floor.getText(), (String) time_6.getText());
                         // Действия, если цвет фона совпадает с colorToCompare
                     } else {
-                        chooseSlot((String) floor.getText(), (String) time_1.getText());
                         Log.d("MYGOT", "it isnt available");
                     }}
             });
@@ -455,6 +456,21 @@ public class SlotsActivity extends AppCompatActivity {
         }
 
         public void chooseSlot(String floor, String time){
+            for (String id: wm_id_floor.keySet()) {
+                if (String.valueOf(wm_id_floor.get(id))==floor) {
+                    Slots s = new Slots();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    Date d = new Date();
+                    String date_str = dateFormat.format(d);
+                    s.start = date_str.substring(0,date_str.length()-5)+time;
+                    Log.d("start", s.start);
+                    s.wm_id = Integer.parseInt(id);
+                    s.user_id = userId;
+                    WMDataBaseSlots.child(time+floor+String.valueOf(dormId)).setValue(s);
+                }
+            }
+
+
         }
 
 
