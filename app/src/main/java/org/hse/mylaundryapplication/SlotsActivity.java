@@ -3,13 +3,18 @@ package org.hse.mylaundryapplication;
 import static java.lang.Integer.parseInt;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -328,7 +333,7 @@ public class SlotsActivity extends AppCompatActivity {
         private Context context;
         private ScheduleItem.OnItemClick onItemClick;
         private TextView floor;
-        private TextView time_1;
+        private Button time_1;
         private TextView time_2;
         private TextView time_3;
         private TextView time_4;
@@ -349,14 +354,104 @@ public class SlotsActivity extends AppCompatActivity {
             time_1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int backgroundColor = ((ColorDrawable) time_1.getBackground()).getColor();
-                    if (backgroundColor == colorToCompare) {
+                    Date now = new Date();
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                    String str_date = format.format(now);
+                    Log.d(str_date,str_date);
+                        if (time_1.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_1.getText().toString(), floor.getText().toString())) {
+                            Log.d("MYGOT", "it is available");
+                            // Действия, если цвет фона совпадает с colorToCompare
+                        } else {
+                            chooseSlot((String) floor.getText(), (String) time_1.getText());
+                            Log.d("MYGOT", "it isnt available");
+                        }}
+            });
+            time_2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Date now = new Date();
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                    String str_date = format.format(now);
+                    Log.d(str_date,str_date);
+                    if (time_2.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_2.getText().toString(), floor.getText().toString())) {
+                        Log.d("MYGOT", "it is available");
+                        // Действия, если цвет фона совпадает с colorToCompare
                     } else {
                         chooseSlot((String) floor.getText(), (String) time_1.getText());
-                        Log.d("MYGOT","itworks");
+                        Log.d("MYGOT", "it isnt available");
+                    }}
+            });
+            time_3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Date now = new Date();
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                    String str_date = format.format(now);
+                    Log.d(str_date,str_date);
+                    if ( time_3.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_3.getText().toString(), floor.getText().toString())) {
+                        Log.d("MYGOT", "it is available");
+                        // Действия, если цвет фона совпадает с colorToCompare
+                    } else {
+                        chooseSlot((String) floor.getText(), (String) time_1.getText());
+                        Log.d("MYGOT", "it isnt available");
+                    }}
+            });
+            time_4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Date now = new Date();
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                    String str_date = format.format(now);
+                    Log.d(str_date,str_date);
+                    if (time_4.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_4.getText().toString(), floor.getText().toString())) {
+                        Log.d("MYGOT", "it is available");
+                        // Действия, если цвет фона совпадает с colorToCompare
+                    } else {
+                        chooseSlot((String) floor.getText(), (String) time_1.getText());
+                        Log.d("MYGOT", "it isnt available");
+                    }}
+            });
+            time_5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Date now = new Date();
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                    String str_date = format.format(now);
+                    Log.d(str_date,str_date);
+                    if ( time_5.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_5.getText().toString(), floor.getText().toString())) {
+                        Log.d("MYGOT", "it is available");
+                        // Действия, если цвет фона совпадает с colorToCompare
+                    } else {
+                        chooseSlot((String) floor.getText(), (String) time_1.getText());
+                        Log.d("MYGOT", "it isnt available");
+                    }}
+            });
+            time_6.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Date now = new Date();
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                    String str_date = format.format(now);
+                    Log.d(str_date,str_date);
+                    if ( time_6.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_6.getText().toString(), floor.getText().toString())) {
+                        Log.d("MYGOT", "it is available");
+                        // Действия, если цвет фона совпадает с colorToCompare
+                    } else {
+                        chooseSlot((String) floor.getText(), (String) time_1.getText());
+                        Log.d("MYGOT", "it isnt available");
+                    }}
+            });
+        }
+
+        public Boolean get_chosen_slot_by_time_floor(String time, String floor){
+            for (String id: wm_id_floor.keySet()) {
+                if (String.valueOf(wm_id_floor.get(id))==floor) {
+                    for (Slots s : slotsArray){
+                        if (String.valueOf(s.wm_id).equals(id) && String.valueOf(s.start.substring(s.start.length()-5)).equals(time)) return false;
                     }
                 }
-            });
+            }
+            return true;
         }
 
         public void chooseSlot(String floor, String time){
