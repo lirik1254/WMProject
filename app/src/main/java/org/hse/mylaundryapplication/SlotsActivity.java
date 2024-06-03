@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,8 +101,19 @@ public class SlotsActivity extends AppCompatActivity {
         for (Slots s: slotsArray)
         {
             if (s.user_id.equals(userId))
+            {
+                TimeZone permTimeZone = TimeZone.getTimeZone("Asia/Yekaterinburg");
+                Calendar calendar = Calendar.getInstance(permTimeZone); // Устанавливаем часовой пояс при создании календаря
+                SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                f1.setTimeZone(permTimeZone);
+                String str_date = f1.format(calendar.getTime());
+                if (s.start.compareTo(str_date)>0)
             {WMDataBaseSlots.child(s.start.substring(s.start.length()-5)+wm_id_floor.get(String.valueOf(s.wm_id))+String.valueOf(dormId)).removeValue();
         Log.d("deleting", s.start.substring(s.start.length()-5)+wm_id_floor.get(String.valueOf(s.wm_id))+String.valueOf(dormId));
+            }
+            else {
+   Toast.makeText(getApplication(), "Вы уже не можете отменить свой слот", Toast.LENGTH_LONG).show();
+                }
             }}
     }
     public static ScheduleItem baseColor (ScheduleItem scheduleItem){
@@ -117,6 +129,7 @@ public class SlotsActivity extends AppCompatActivity {
     public static ScheduleItem color_past_slots_Item(ScheduleItem scheduleItem, String str_date) {
         if ( str_date.compareTo("09:00")>0){
             scheduleItem.setTime1("#848482");
+
         }
         if ( str_date.compareTo("11:00")>0) {
             scheduleItem.setTime2("#848482");
@@ -168,14 +181,13 @@ public class SlotsActivity extends AppCompatActivity {
             ScheduleItem scheduleItem = new ScheduleItem();
             scheduleItem.setFloor(wm_id_floor.get(wm));
             scheduleItem = baseColor(scheduleItem);
-            Date now = new Date();
             TimeZone permTimeZone = TimeZone.getTimeZone("Asia/Yekaterinburg");
-            // Устанавливаем выбранный часовой пояс для объекта Date
-            // Можно также использовать Calendar для работы с датой и временем
-            // Но в данном случае, для простоты, используем прямое преобразование Date
-            now.setTime(now.getTime() + permTimeZone.getOffset(now.getTime()));
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-            String str_date = format.format(now);
+            Calendar calendar = Calendar.getInstance(permTimeZone); // Устанавливаем часовой пояс при создании календаря
+            SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            f1.setTimeZone(permTimeZone); // Устанавливаем часовой пояс для форматирования
+            Log.d("time", f1.format(calendar.getTime()));
+            String str_date = f1.format(calendar.getTime()).substring(f1.format(calendar.getTime()).length()-5);
+            Log.d("time ыек", f1.format(calendar.getTime()).substring(f1.format(calendar.getTime()).length()-5));
             for (String time: timeArray)
             {
                 for (Slots slot: slots)
@@ -220,7 +232,12 @@ public class SlotsActivity extends AppCompatActivity {
                     for (String id : wmIdArray) {
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         try {
-                            if (slot.wm_id.toString().equals(id)  &&  dateFormat.parse(slot.start).after(new Date())) {
+                            TimeZone permTimeZone = TimeZone.getTimeZone("Asia/Yekaterinburg");
+                            Calendar calendar = Calendar.getInstance(permTimeZone); // Устанавливаем часовой пояс при создании календаря
+                            SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            f1.setTimeZone(permTimeZone); // Устанавливаем часовой пояс для форматирования
+                            dateFormat.setTimeZone(permTimeZone);
+                            if (slot.wm_id.toString().equals(id)  &&  dateFormat.parse(slot.start).after(f1.parse(f1.format(calendar.getTime())))) {
                                 slotsArray.add(slot);
                             }
                         } catch (Exception e) {
@@ -321,9 +338,6 @@ public class SlotsActivity extends AppCompatActivity {
 
     public void init() {
         reset_slot_button = findViewById(R.id.reset_chosen_slot);
-
-
-
     }
     public final static class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private final static int TYPE_ITEM = 0;
@@ -408,18 +422,12 @@ public class SlotsActivity extends AppCompatActivity {
             time_1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Date now = new Date();
-                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-                    String str_date = format.format(now);
-                    Log.d(str_date,str_date);
-                        if (time_1.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_1.getText().toString(), floor.getText().toString())) {
+                        if (checkTime(time_1.getText().toString())  && get_chosen_slot_by_time_floor(time_1.getText().toString(), floor.getText().toString())) {
                             Log.d("MYGOT", "it is available");
-
                             if (user_does_not_laundry()) {
                                 chooseSlot((String) floor.getText(), (String) time_1.getText());
-                            }
-                            // Действия, если цвет фона совпадает с colorToCompare
-                        } else {
+                            }}
+                        else {
                             Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                             Log.d("MYGOT", "it isnt available");
                         }}
@@ -427,15 +435,10 @@ public class SlotsActivity extends AppCompatActivity {
             time_2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Date now = new Date();
-                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-                    String str_date = format.format(now);
-                    Log.d(str_date,str_date);
-                    if (time_2.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_2.getText().toString(), floor.getText().toString())) {
+                    if (checkTime(time_2.getText().toString())  && get_chosen_slot_by_time_floor(time_2.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
                         if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_2.getText());
-                        // Действия, если цвет фона совпадает с colorToCompare
-                    } else {
+                       } else {
                         Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                         Log.d("MYGOT", "it isnt available");
                     }}
@@ -443,15 +446,10 @@ public class SlotsActivity extends AppCompatActivity {
             time_3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Date now = new Date();
-                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-                    String str_date = format.format(now);
-                    Log.d(str_date,str_date);
-                    if ( time_3.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_3.getText().toString(), floor.getText().toString())) {
+                    if ( checkTime(time_3.getText().toString())  && get_chosen_slot_by_time_floor(time_3.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
                         if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_3.getText());
-                        // Действия, если цвет фона совпадает с colorToCompare
-                    } else {
+                     } else {
                         Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                         Log.d("MYGOT", "it isnt available");
                     }}
@@ -459,14 +457,9 @@ public class SlotsActivity extends AppCompatActivity {
             time_4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Date now = new Date();
-                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-                    String str_date = format.format(now);
-                    Log.d(str_date,str_date);
-                    if (time_4.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_4.getText().toString(), floor.getText().toString())) {
+                    if (checkTime(time_4.getText().toString())  && get_chosen_slot_by_time_floor(time_4.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
                         if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_4.getText());
-                        // Действия, если цвет фона совпадает с colorToCompare
                     } else {
                         Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                         Log.d("MYGOT", "it isnt available");
@@ -475,15 +468,10 @@ public class SlotsActivity extends AppCompatActivity {
             time_5.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Date now = new Date();
-                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-                    String str_date = format.format(now);
-                    Log.d(str_date,str_date);
-                    if ( time_5.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_5.getText().toString(), floor.getText().toString())) {
+                    if (checkTime(time_5.getText().toString())  && get_chosen_slot_by_time_floor(time_5.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
                         if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_5.getText());
-                        // Действия, если цвет фона совпадает с colorToCompare
-                    } else {
+                   } else {
                         Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                         Log.d("MYGOT", "it isnt available");
                     }}
@@ -491,14 +479,9 @@ public class SlotsActivity extends AppCompatActivity {
             time_6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Date now = new Date();
-                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-                    String str_date = format.format(now);
-                    Log.d(str_date,str_date);
-                    if ( time_6.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_6.getText().toString(), floor.getText().toString())) {
+                    if (checkTime(time_6.getText().toString()) && get_chosen_slot_by_time_floor(time_6.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
                        if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_6.getText());
-                        // Действия, если цвет фона совпадает с colorToCompare
                     } else {
                         Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                         Log.d("MYGOT", "it isnt available");
@@ -530,14 +513,29 @@ public class SlotsActivity extends AppCompatActivity {
             return true;
         }
 
+        public Boolean checkTime(String text) {
+            TimeZone permTimeZone = TimeZone.getTimeZone("Asia/Yekaterinburg");
+            Calendar calendar = Calendar.getInstance(permTimeZone); // Устанавливаем часовой пояс при создании календаря
+            SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            f1.setTimeZone(permTimeZone); // Устанавливаем часовой пояс для форматирования
+            Log.d("time", f1.format(calendar.getTime()));
+            String str_date = f1.format(calendar.getTime()).substring(f1.format(calendar.getTime()).length()-5);
+            if (text.toString().compareTo(str_date)>0) return true;
+            else return false;
+        }
+
+
         public void chooseSlot(String floor, String time){
             for (String id: wm_id_floor.keySet()) {
                 if (String.valueOf(wm_id_floor.get(id))==floor) {
                     Slots s = new Slots();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    Date d = new Date();
-                    String date_str = dateFormat.format(d);
-                    s.start = date_str.substring(0,date_str.length()-5)+time;
+                    TimeZone permTimeZone = TimeZone.getTimeZone("Asia/Yekaterinburg");
+                    Calendar calendar = Calendar.getInstance(permTimeZone); // Устанавливаем часовой пояс при создании календаря
+                    SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    f1.setTimeZone(permTimeZone); // Устанавливаем часовой пояс для форматирования
+                    Log.d("time", f1.format(calendar.getTime()));
+                    String str_date = f1.format(calendar.getTime());
+                    s.start = str_date.substring(0,str_date.length()-5)+time;
                     Log.d("start", s.start);
                     s.wm_id = Integer.parseInt(id);
                     s.user_id = userId;
