@@ -37,8 +37,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 
 public class SlotsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -167,6 +169,11 @@ public class SlotsActivity extends AppCompatActivity {
             scheduleItem.setFloor(wm_id_floor.get(wm));
             scheduleItem = baseColor(scheduleItem);
             Date now = new Date();
+            TimeZone permTimeZone = TimeZone.getTimeZone("Asia/Yekaterinburg");
+            // Устанавливаем выбранный часовой пояс для объекта Date
+            // Можно также использовать Calendar для работы с датой и временем
+            // Но в данном случае, для простоты, используем прямое преобразование Date
+            now.setTime(now.getTime() + permTimeZone.getOffset(now.getTime()));
             SimpleDateFormat format = new SimpleDateFormat("HH:mm");
             String str_date = format.format(now);
             for (String time: timeArray)
