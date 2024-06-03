@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,13 +58,19 @@ public class SlotsActivity extends AppCompatActivity {
     private static DatabaseReference WMDataBaseUsers;
     private static DatabaseReference WMDataBaseWM;
     private static DatabaseReference WMDataBaseSlots;
+    public static TextView chosen_slot;
+    public static View delete_slot;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.slots_layout);
+        chosen_slot = findViewById(R.id.chosen_slot);
+        delete_slot = findViewById(R.id.reset_chosen_slot);
+
         recyclerView = findViewById(R.id.listView);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         adapter = new ItemAdapter(this::onScheduleItemClick);
@@ -74,8 +81,27 @@ public class SlotsActivity extends AppCompatActivity {
         WMDataBaseWM = FirebaseDatabase.getInstance().getReference().child(WASHING_MACHINES_KEY);
         WMDataBaseSlots = FirebaseDatabase.getInstance().getReference().child(SLOTS_KEY);
         getUserFromDB();
-    }
+        chosen_slot.setVisibility(View.INVISIBLE);
+        delete_slot.setVisibility(View.INVISIBLE);
+        delete_slot.setActivated(false);
+        delete_slot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             delete_chosen_slot();
+            }
+        });
 
+
+    }
+    public void delete_chosen_slot(){
+
+        for (Slots s: slotsArray)
+        {
+            if (s.user_id.equals(userId))
+            {WMDataBaseSlots.child(s.start.substring(s.start.length()-5)+wm_id_floor.get(String.valueOf(s.wm_id))+String.valueOf(dormId)).removeValue();
+        Log.d("deleting", s.start.substring(s.start.length()-5)+wm_id_floor.get(String.valueOf(s.wm_id))+String.valueOf(dormId));
+            }}
+    }
     public static ScheduleItem baseColor (ScheduleItem scheduleItem){
         scheduleItem.setTime1("#003399");
         scheduleItem.setTime2("#003399");
@@ -195,8 +221,29 @@ public class SlotsActivity extends AppCompatActivity {
                         }
                     }
                 }
+
                 try {
+
                     initSlots();
+                    Boolean is_busy = false;
+                    for (Slots s: slotsArray) {
+
+                        if (s.user_id.equals(userId)) {
+                            is_busy = true;
+                            chosen_slot.setVisibility(View.VISIBLE);
+                            chosen_slot.setText("Вы записаны на "+s.start);
+                            delete_slot.setVisibility(View.VISIBLE);
+                            delete_slot.setActivated(true);
+                        }
+                    }
+                    if (!is_busy) {
+
+                        delete_slot.setVisibility(View.INVISIBLE);
+                        delete_slot.setActivated(false);
+                        chosen_slot.setText("Вы не записаны на сегодня!");
+
+                    }
+
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -360,9 +407,13 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                         if (time_1.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_1.getText().toString(), floor.getText().toString())) {
                             Log.d("MYGOT", "it is available");
-                            chooseSlot((String) floor.getText(), (String) time_1.getText());
+
+                            if (user_does_not_laundry()) {
+                                chooseSlot((String) floor.getText(), (String) time_1.getText());
+                            }
                             // Действия, если цвет фона совпадает с colorToCompare
                         } else {
+                            Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                             Log.d("MYGOT", "it isnt available");
                         }}
             });
@@ -375,9 +426,10 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                     if (time_2.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_2.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
-                        chooseSlot((String) floor.getText(), (String) time_2.getText());
+                        if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_2.getText());
                         // Действия, если цвет фона совпадает с colorToCompare
                     } else {
+                        Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                         Log.d("MYGOT", "it isnt available");
                     }}
             });
@@ -390,10 +442,10 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                     if ( time_3.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_3.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
-                        chooseSlot((String) floor.getText(), (String) time_3.getText());
+                        if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_3.getText());
                         // Действия, если цвет фона совпадает с colorToCompare
                     } else {
-                        chooseSlot((String) floor.getText(), (String) time_1.getText());
+                        Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                         Log.d("MYGOT", "it isnt available");
                     }}
             });
@@ -406,9 +458,10 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                     if (time_4.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_4.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
-                        chooseSlot((String) floor.getText(), (String) time_4.getText());
+                        if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_4.getText());
                         // Действия, если цвет фона совпадает с colorToCompare
                     } else {
+                        Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                         Log.d("MYGOT", "it isnt available");
                     }}
             });
@@ -421,9 +474,10 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                     if ( time_5.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_5.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
-                        chooseSlot((String) floor.getText(), (String) time_5.getText());
+                        if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_5.getText());
                         // Действия, если цвет фона совпадает с colorToCompare
                     } else {
+                        Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                         Log.d("MYGOT", "it isnt available");
                     }}
             });
@@ -436,9 +490,10 @@ public class SlotsActivity extends AppCompatActivity {
                     Log.d(str_date,str_date);
                     if ( time_6.getText().toString().compareTo(str_date)>0 && get_chosen_slot_by_time_floor(time_6.getText().toString(), floor.getText().toString())) {
                         Log.d("MYGOT", "it is available");
-                        chooseSlot((String) floor.getText(), (String) time_6.getText());
+                       if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_6.getText());
                         // Действия, если цвет фона совпадает с colorToCompare
                     } else {
+                        Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                         Log.d("MYGOT", "it isnt available");
                     }}
             });
@@ -452,6 +507,19 @@ public class SlotsActivity extends AppCompatActivity {
                     }
                 }
             }
+            return true;
+        }
+
+
+        public Boolean user_does_not_laundry() {
+            for (Slots s: slotsArray ){
+                if (s.user_id.equals(userId)) {
+                    Toast.makeText(this.context, "you alredy do laundry today", Toast.LENGTH_LONG).show();
+                    Log.d("laundry", "false");
+                    return false;
+                }
+            }
+            Log.d("laundry", "true");
             return true;
         }
 
@@ -469,8 +537,6 @@ public class SlotsActivity extends AppCompatActivity {
                     WMDataBaseSlots.child(time+floor+String.valueOf(dormId)).setValue(s);
                 }
             }
-
-
         }
 
 
