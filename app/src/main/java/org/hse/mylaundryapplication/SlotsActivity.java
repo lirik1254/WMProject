@@ -234,9 +234,12 @@ public class SlotsActivity extends AppCompatActivity {
                         try {
                             TimeZone permTimeZone = TimeZone.getTimeZone("Asia/Yekaterinburg");
                             Calendar calendar = Calendar.getInstance(permTimeZone); // Устанавливаем часовой пояс при создании календаря
+                            calendar.set(Calendar.HOUR_OF_DAY, 0); // Устанавливаем часы
+                            calendar.set(Calendar.MINUTE, 0);
                             SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                             f1.setTimeZone(permTimeZone); // Устанавливаем часовой пояс для форматирования
                             dateFormat.setTimeZone(permTimeZone);
+
                             if (slot.wm_id.toString().equals(id)  &&  dateFormat.parse(slot.start).after(f1.parse(f1.format(calendar.getTime())))) {
                                 slotsArray.add(slot);
                             }
@@ -255,7 +258,7 @@ public class SlotsActivity extends AppCompatActivity {
                         if (s.user_id.equals(userId)) {
                             is_busy = true;
                             chosen_slot.setVisibility(View.VISIBLE);
-                            chosen_slot.setText("Вы записаны на "+s.start);
+                            chosen_slot.setText("Запись на "+s.start.substring(s.start.length()-5) + " на " + String.valueOf(wm_id_floor.get(String.valueOf(s.wm_id)))+ " этаж");
                             delete_slot.setVisibility(View.VISIBLE);
                             delete_slot.setActivated(true);
                         }
