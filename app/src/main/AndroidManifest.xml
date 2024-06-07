@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:allowBackup="true"
@@ -14,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Base_project"
         tools:targetApi="31" >
+        <receiver android:process=":remote" android:name=".NotificationReceiver"
+
+            />
         <activity
             android:name=".SlotsActivity"
             android:exported="true"
@@ -29,6 +37,10 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".SettingsActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan" >
 

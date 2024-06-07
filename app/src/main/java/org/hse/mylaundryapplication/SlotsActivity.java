@@ -1,8 +1,15 @@
 package org.hse.mylaundryapplication;
 
+import static org.hse.mylaundryapplication.SettingsActivity.PERMISSION;
+import static org.hse.mylaundryapplication.SettingsActivity.PERMISSION1;
 import static java.lang.Integer.parseInt;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,8 +25,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,6 +55,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 public class SlotsActivity extends AppCompatActivity {
+    private static final Integer REQUEST_PERMISSION_CODE1 =1 ;
     private RecyclerView recyclerView;
     private static ItemAdapter adapter;
     private String USERS_KEY = "Users";
@@ -64,6 +76,7 @@ public class SlotsActivity extends AppCompatActivity {
     public static TextView chosen_slot;
     public static View delete_slot;
 
+    public static Integer nots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +106,37 @@ public class SlotsActivity extends AppCompatActivity {
              delete_chosen_slot();
             }
         });
+        Toolbar toolbar = findViewById(R.id.toolbar).findViewById(R.id.my_toolbar);
 
+// Находим элементы в Toolbar
+        View button_settings = toolbar.findViewById(R.id.settings);
+
+        button_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Settings();
+            }
+        });
+
+        View button_slots = toolbar.findViewById(R.id.slots);
+
+        button_slots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Slots();
+            }
+        });
 
     }
+    private void Settings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+    private void Slots() {
+        Intent intent = new Intent(this, SlotsActivity.class);
+        startActivity(intent);
+    }
+
     public void delete_chosen_slot(){
 
         for (Slots s: slotsArray)
@@ -171,7 +212,7 @@ public class SlotsActivity extends AppCompatActivity {
         return scheduleItem;
     }
 
-    private static  void initSlots() throws ParseException {
+    private void initSlots() throws ParseException {
 
         List<ScheduleItem> groupsRes = new ArrayList<>();
         for (String wm : wm_id_floor.keySet()) {
@@ -211,7 +252,7 @@ public class SlotsActivity extends AppCompatActivity {
 
     }
 
-    private static void getDormitory() {
+    private  void getDormitory() {
             Users user = (Users) listData.get(0);
             if (Objects.equals(user.mail, userId)) {
                 dormId = user.dormitory;
@@ -219,7 +260,7 @@ public class SlotsActivity extends AppCompatActivity {
         getWMFromDB();
     }
 
-    public static void getSlotsFromDB() {
+    public void getSlotsFromDB() {
         ValueEventListener vListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
@@ -270,6 +311,35 @@ public class SlotsActivity extends AppCompatActivity {
                         chosen_slot.setText("Вы не записаны на сегодня!");
 
                     }
+                    if (nots != 0)
+                        for (Slots s : slotsArray) {
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            TimeZone permTimeZone = TimeZone.getTimeZone("Asia/Yekaterinburg");
+                            Calendar calendar = Calendar.getInstance(permTimeZone); // Устанавливаем часовой пояс при создании календаря
+                            SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            f1.setTimeZone(permTimeZone); // Устанавливаем часовой пояс для форматирования
+                            dateFormat.setTimeZone(permTimeZone);
+                            Date d;
+                            try {
+                                d = f1.parse(f1.format(calendar.getTime()));
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            long differenceInSeconds = 0;
+                            try {
+                                differenceInSeconds = (f1.parse(s.start).getTime() - d.getTime()) / 1000 - 60 * nots;
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                            turnOffNotification();
+                            Log.d("going here", "there");
+                            if (differenceInSeconds>0) CheckPermission("Скоро пора стираться!", ((int) differenceInSeconds));
+                        }
+
+                    else {
+                        turnOffNotification();
+                    }
 
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
@@ -282,7 +352,73 @@ public class SlotsActivity extends AppCompatActivity {
         WMDataBaseSlots.addValueEventListener(vListener);
 
     }
-    public static void getWMFromDB() {
+    public void CheckPermission(String message, Integer delay) {
+        int permissionCheck = ActivityCompat.checkSelfPermission(this, PERMISSION);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, PERMISSION1) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSION)) {
+                Log.d("au", "kuk2u");
+                showExplanation("Внимание", "Объясняю", PERMISSION, REQUEST_PERMISSION_CODE1);
+            } else {
+                Log.d("au", "kuku");
+                //    requestPermission(PERMISSION, REQUEST_PERMISSION_CODE);
+                requestPermission(PERMISSION, REQUEST_PERMISSION_CODE1);
+            }
+        }
+
+        else {
+
+            Log.d("au", "we are here");
+            turnOnNotification(message, delay);
+        }
+
+    }
+    private void showExplanation(String title,
+                                 String message,
+                                 final String permission,
+                                 final int permissionRequestCode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestPermission(permission, permissionRequestCode);
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void requestPermission(String permissionName, int permissionRequestCode) {
+        ActivityCompat.requestPermissions(this,
+                new String[]{permissionName}, permissionRequestCode);
+    }
+
+    public void turnOnNotification(String message, Integer delay){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+// Создаем Intent для запуска уведомления
+        Intent notificationIntent = new Intent(this, NotificationReceiver.class);
+        notificationIntent.putExtra("notificationId", 1); // Уникальный ID уведомления
+        notificationIntent.putExtra("notificationMessage", message);
+
+
+// Создаем PendingIntent, который будет запускать уведомление
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+// Устанавливаем отложенное событие на 20 секунд
+        Log.d("time_to_wait", String.valueOf(delay));
+        long futureInMillis = System.currentTimeMillis() + delay*1000; // Текущее время + 20 секунд
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, futureInMillis, pendingIntent);
+    }
+
+
+    public void turnOffNotification()
+    {
+        Intent intent = new Intent(this, NotificationReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(sender);
+
+    }
+    public void getWMFromDB() {
         ValueEventListener vListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
@@ -313,7 +449,7 @@ public class SlotsActivity extends AppCompatActivity {
     }
 
 
-    public static void getUserFromDB() {
+    public void getUserFromDB() {
         ValueEventListener vListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
@@ -324,6 +460,7 @@ public class SlotsActivity extends AppCompatActivity {
                     assert user != null;
                     if (Objects.equals( (String)user.mail, userId))
                     {listData.add(user);
+                        nots = user.notifications;
                     }
                 }
                 getDormitory();

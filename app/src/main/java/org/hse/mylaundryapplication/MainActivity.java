@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     String pat_name_text = pat_name.getText().toString();
                     String mail_text = replacePointComma(mail.getText().toString());
                     String password_text = password.getText().toString();
-                    Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text, mail_text, 1);
+                    Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text, mail_text, 1, 0);
                     WMDataBase.child(mail_text).setValue(newUser);
                     Toast.makeText(getApplicationContext(), "Регистрация прошла успешно!", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(MainActivity.this, AuthorisationActivity.class);

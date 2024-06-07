@@ -52,4 +52,5 @@ dependencies {
     implementation("com.sun.mail:android-mail:1.6.2")
     implementation("com.sun.mail:android-activation:1.6.2")
     implementation("com.google.firebase:firebase-messaging:20.2.3")
+
 }
