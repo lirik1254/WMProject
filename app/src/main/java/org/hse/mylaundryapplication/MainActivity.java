@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText last_name, first_name, pat_name, mail, password, confirm_password, code;
     private ImageButton showPassword;
     private static DatabaseReference WMDataBase;
-    private String USER_KEY = "Users"; // По сути название таблицы в базе данных WMDataBase
+    private static String USER_KEY = "Users"; // По сути название таблицы в базе данных WMDataBase
     private View registration_button, check_code_button, send_code;
     boolean isShowPicture = true;
     boolean isConfirmMail = false;
@@ -85,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Сначала подтвердите почту", Toast.LENGTH_LONG).show();
+                    if (!isConfirmMail)
+                        Toast.makeText(getApplicationContext(), "Сначала подтвердите почту", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -155,22 +156,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean check_password () {
+        if (password.getText().toString().length() == 0)
+        {
+            if (isConfirmMail) {
+                Toast.makeText(getApplicationContext(), "Сначал введите и подтвердите пароль!", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
         if (password.getText().toString().length() < 8) {
-            Toast.makeText(getApplicationContext(), "Длина пароля должна быть не меньше 8 символов!", Toast.LENGTH_LONG).show();
-            password.setText("");
-            confirm_password.setText("");
+            if (isConfirmMail) {
+                Toast.makeText(getApplicationContext(), "Длина пароля должна быть не меньше 8 символов!", Toast.LENGTH_LONG).show();
+                password.setText("");
+                confirm_password.setText("");
+            }
             return false;
         }
         else if (!password.getText().toString().equals(confirm_password.getText().toString())) {
-            Toast.makeText(getApplicationContext(), "Пароли не совпадают!", Toast.LENGTH_LONG).show();
-            password.setText("");
-            confirm_password.setText("");
+            if (isConfirmMail) {
+                Toast.makeText(getApplicationContext(), "Пароли не совпадают!", Toast.LENGTH_LONG).show();
+                password.setText("");
+                confirm_password.setText("");
+            }
             return false;
         }
         return true;
     }
 
-    private boolean mailcheck () {
+    public boolean mailcheck () {
         if (mail.getText().toString().length() < 11 || !mail.getText().toString().substring(mail.getText().toString().length() - 11).equals("@edu.hse.ru")) {
             Toast.makeText(getApplicationContext(), "Домен почты должен быть @edu.hse.ru", Toast.LENGTH_LONG).show();
             mail.setText("");
@@ -247,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public static void getDataFromDB() {
+        WMDataBase = FirebaseDatabase.getInstance().getReference().child(USER_KEY);
         ValueEventListener vListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {

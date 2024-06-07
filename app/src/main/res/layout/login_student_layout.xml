@@ -58,21 +58,14 @@
             android:layout_height="203dp" />
 
         <TextView
-            android:id="@+id/login"
+            android:id="@+id/notRegist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/not_registered"
             android:theme="@style/MyLabelStyle"
             android:layout_margin="5dp"
             />
-        <TextView
-            android:id="@+id/watchman"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/im_watchman"
-            android:theme="@style/MyLabelStyle"
-            android:layout_margin="5dp"
-            />
+
         <TextView
             android:id="@+id/forgot_pass"
             android:layout_width="match_parent"
