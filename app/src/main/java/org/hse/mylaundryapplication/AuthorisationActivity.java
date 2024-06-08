@@ -73,7 +73,8 @@ public class AuthorisationActivity extends AppCompatActivity {
         forgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(AuthorisationActivity.this,  ForgotPassActivity.class);
+                startActivity(intent);
             }
         });
 //

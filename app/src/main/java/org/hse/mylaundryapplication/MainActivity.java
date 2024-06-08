@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mailcheck() && checkRegistration(replacePointComma(mail.getText().toString()))) {
-                    Log.d("code", new SendEmailTask().execute("kvshulzhik@edu.hse.ru").toString());
+                    Log.d("code", new SendEmailTask().execute(mail.getText().toString()).toString());
                 }
             }
         });
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.pass_1);
         registration_button = findViewById(R.id.register_button);
         confirm_password = findViewById(R.id.pass_2);
-        showPassword = findViewById(R.id.showPassword);
+        showPassword = findViewById(R.id.show_password);
         send_code = findViewById(R.id.send_code);
         code = findViewById(R.id.code_mail);
         check_code_button = findViewById(R.id.check_code_button);
@@ -185,12 +185,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean mailcheck () {
         if (mail.getText().toString().length() < 11 || !mail.getText().toString().substring(mail.getText().toString().length() - 11).equals("@edu.hse.ru")) {
             Toast.makeText(getApplicationContext(), "Домен почты должен быть @edu.hse.ru", Toast.LENGTH_LONG).show();
-            mail.setText("");
             return false;
         }
         else if (mail.getText().toString().length() == 11) {
             Toast.makeText(getApplicationContext(), "Почта не может содержать только домен!", Toast.LENGTH_LONG).show();
-            mail.setText("");
+            return false;
+        }
+        else if (mail.getText().toString().chars().filter(ch -> ch == '@').count() > 1) {
+            Toast.makeText(getApplicationContext(), "Некорректно введена почта", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

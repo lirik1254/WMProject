@@ -2,9 +2,9 @@
     <string name="app_name">My Application</string>
 
     <string name="timetable_for_hse_fe">Timetable for HSE FE</string>
-<string name="register">Регистрация студента!</string>
+    <string name="register">Регистрация студента!</string>
     <string name="pass_label">Введите пароль:</string>
-<string name="last_name_label">Введите фамилию:</string>
+    <string name="last_name_label">Введите фамилию:</string>
     <string name="first_name_label">Введите имя:</string>
     <string name="pat_name_label">Введите отчество:</string>
     <string name="register_button">Зарегистрироваться!</string>
@@ -30,7 +30,6 @@
     <string name="notifications_time_label">Выберите за какое количество минут хотите получать уведомления о стирке:</string>
 
     <string name="choose_dormitory_label">Выберите адрес общежития:</string>
-
 
 
     <string name="reset_slot_button">Отменить \n запись</string>
