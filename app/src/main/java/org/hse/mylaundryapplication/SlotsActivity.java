@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +75,9 @@ public class SlotsActivity extends AppCompatActivity {
     private static DatabaseReference WMDataBaseWM;
     private static DatabaseReference WMDataBaseSlots;
     public static TextView chosen_slot;
+    private static ImageView logout;
     public static View delete_slot;
+    private static ImageView profile;
 
     public static Integer nots;
 
@@ -84,8 +87,11 @@ public class SlotsActivity extends AppCompatActivity {
         setContentView(R.layout.slots_layout);
         chosen_slot = findViewById(R.id.chosen_slot);
         delete_slot = findViewById(R.id.reset_chosen_slot);
+        logout = findViewById(R.id.logout);
 
         recyclerView = findViewById(R.id.listView);
+
+        profile = findViewById(R.id.profile);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -124,6 +130,23 @@ public class SlotsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Slots();
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SlotsActivity.this, AuthorisationActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SlotsActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
 

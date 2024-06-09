@@ -11,8 +11,10 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isConfirmPasswords = false;
     private String CODE = "1234567890098765";
     static ArrayList<Users> listData = new ArrayList<>();
+    private Spinner spinner;
 
     public static boolean isMessageSend = false;
     @Override
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         registration_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,11 +82,26 @@ public class MainActivity extends AppCompatActivity {
                     String pat_name_text = pat_name.getText().toString();
                     String mail_text = replacePointComma(mail.getText().toString());
                     String password_text = password.getText().toString();
-                    Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text, mail_text, 1, 0);
+                    int dormitory = 0;
+                    switch(spinner.getSelectedItem().toString()) {
+                        case "Пермь, ул. Уинская, д. 34" :
+                            dormitory = 1;
+                            break;
+                        case "Пермь, бульвар Гагарина, д. 37А":
+                            dormitory = 2;
+                            break;
+                        default:
+                            dormitory = 3;
+                            break;
+                    }
+
+
+                    Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text, mail_text, dormitory, 0);
                     WMDataBase.child(mail_text).setValue(newUser);
                     Toast.makeText(getApplicationContext(), "Регистрация прошла успешно!", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(MainActivity.this, AuthorisationActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 else {
                     if (!isConfirmMail)
@@ -153,6 +172,10 @@ public class MainActivity extends AppCompatActivity {
         send_code = findViewById(R.id.send_code);
         code = findViewById(R.id.code_mail);
         check_code_button = findViewById(R.id.check_code_button);
+        spinner = findViewById(R.id.groupList);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dormitory_names, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     private boolean check_password () {

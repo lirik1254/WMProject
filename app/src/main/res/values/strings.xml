@@ -48,4 +48,10 @@
     <string name="laundry_App">PHSE Laundry</string>
     <string name="mail">Корпоративная почта</string>
     <string name="chosen_slot">"Вы записаны на сегодня на \n 18:00-20:00!"</string>
+
+    <string-array name="dormitory_names">
+        <item>Пермь, ул. Уинская, д. 34</item>
+        <item>Пермь, бульвар Гагарина, д. 37А</item>
+        <item>Пермь, бульвар Гагарина, д.41</item>
+    </string-array>
 </resources>

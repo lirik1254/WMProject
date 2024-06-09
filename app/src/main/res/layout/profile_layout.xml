@@ -133,72 +133,120 @@
             >
 
             <TextView
-                android:layout_height="wrap_content"
-                android:minHeight="30dp"
                 android:id="@+id/mail"
-                tools:text="mmgolovanova@edu.hse.ru"
                 android:layout_width="0dp"
-                android:layout_weight="70"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="70"
+                android:minHeight="30dp"
+                tools:text="mmgolovanova@edu.hse.ru" />
 
         </LinearLayout>
 
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/mail_check"
-        android:id="@+id/pass">
-    <TextView
-        android:id="@+id/dormitory_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/your_dormitory_label"
-        android:theme="@style/MyTextStyle"
-        android:layout_margin="5dp"
+        <LinearLayout
+            android:id="@+id/pass"
+            android:layout_width="match_parent"
+            android:layout_height="316dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/mail_check">
 
-        />
-    <Spinner
-        android:id="@+id/groupList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-    <TextView
-        android:id="@+id/pass_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/change_pass_label"
-        android:theme="@style/MyTextStyle"
-        />
-    <EditText
-        android:layout_height="0dp"
-        android:minHeight="30dp"
-        android:id="@+id/pass_1"
-        tools:text="Введите код"
-        android:layout_width="match_parent"
-        android:inputType="numberPassword"
-        android:layout_weight="70"/>
-    <EditText
-        android:layout_height="0dp"
-        android:minHeight="30dp"
-        android:id="@+id/pass_2"
-        tools:text="Введите код"
-        android:layout_width="match_parent"
-        android:inputType="numberPassword"
-        android:layout_weight="70"/>
+            <TextView
+                android:id="@+id/dormitory_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/your_dormitory_label"
+                android:theme="@style/MyTextStyle"
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save_button"
-            android:layout_gravity="center_horizontal"
-            />
-    </LinearLayout>
+                />
+
+            <Spinner
+                android:id="@+id/groupList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="157dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="327dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="70"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        style="@style/MyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="70"
+                        android:text="Введите пароль" />
+
+                    <EditText
+                        android:id="@+id/pass_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="70"
+                        android:inputType="textPassword"
+                        android:minHeight="30dp"
+                        tools:text="Введите код" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="349dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="70"
+                        android:text="Введите подтверждение пароля"
+                        android:theme="@style/MyTextStyle" />
+
+                    <EditText
+                        android:id="@+id/pass_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="70"
+                        android:inputType="textPassword"
+                        android:minHeight="30dp"
+                        tools:text="Введите код" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="41dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="70"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/show_password"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="70"
+                        android:background="#00FFFFFF"
+                        android:foregroundGravity="center_horizontal"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/showpassword"
+                        tools:srcCompat="@drawable/showpassword" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/saveChangesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/save_button" />
+        </LinearLayout>
     </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -60,6 +61,8 @@ public class SettingsActivity extends AppCompatActivity {
     private static DatabaseReference WMDataBaseUsers;
     private static DatabaseReference WMDataBaseWM;
     private static DatabaseReference WMDataBaseSlots;
+    private static ImageView logout;
+    private static ImageView profile;
 
     private static Switch notificationToggler;
     private static View notificationLabel;
@@ -75,6 +78,8 @@ public class SettingsActivity extends AppCompatActivity {
         // userId =getIntent().getStringExtra('USER_ID');
         notificationToggler = findViewById(R.id.notification_switch);
         notificationLabel = findViewById(R.id.notification_label);
+        logout = findViewById(R.id.logout);
+        profile = findViewById(R.id.profile);
         spinner = findViewById(R.id.groupList);
         save_button = findViewById(R.id.save_button);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Arrays.stream(timeArray).toArray());
@@ -132,6 +137,23 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Slots();
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, AuthorisationActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
 

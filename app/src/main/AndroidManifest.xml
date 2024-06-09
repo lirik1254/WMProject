@@ -19,6 +19,9 @@
         android:theme="@style/Theme.Base_project"
         tools:targetApi="31">
         <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPassActivity"
             android:exported="false" />
 
@@ -27,7 +30,7 @@
             android:process=":remote" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".AuthorisationActivity"
             android:exported="true"
             android:theme="@style/Theme.Base_project">
             <intent-filter>
@@ -37,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AuthorisationActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".SlotsActivity"
@@ -46,7 +49,7 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

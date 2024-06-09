@@ -23,6 +23,7 @@ public class AuthorisationActivity extends AppCompatActivity {
     View loginButton;
     ImageButton showPassword;
     private boolean isShowPicture = false;
+    public static Users currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +38,14 @@ public class AuthorisationActivity extends AppCompatActivity {
                 if (loginPasswordCheck())
                 {
                     Toast.makeText(getApplicationContext(), "Вы успешно авторизованы!", Toast.LENGTH_LONG).show();
+                    for (Users us: MainActivity.listData) {
+                        if (us.mail.equals(MainActivity.replacePointComma(mail.getText().toString()))) {
+                            currentUser = new Users(us.first_name, us.last_name, us.pat_name, us.password,  us.mail, us.dormitory, us.notifications);
+                        }
+                    }
                     Intent intent = new Intent(AuthorisationActivity.this, SlotsActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 else {
                     if (mail.getText().toString().equals("") && password.getText().toString().equals(""))
@@ -61,10 +68,10 @@ public class AuthorisationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isShowPicture) {
                     showPassword.setImageResource(R.drawable.showpassword);
-                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 } else {
                     showPassword.setImageResource(R.drawable.hidepassword);
-                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
                 isShowPicture = !isShowPicture;
             }
