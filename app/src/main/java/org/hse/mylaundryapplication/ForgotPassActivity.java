@@ -1,5 +1,6 @@
 package org.hse.mylaundryapplication;
 
+import static org.hse.mylaundryapplication.MainActivity.hashPass;
 import static org.hse.mylaundryapplication.MainActivity.listData;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -105,7 +107,12 @@ public class ForgotPassActivity extends AppCompatActivity {
                     for (Users us : listData) {
                         if (replacePointComma(us.mail).equals(mail.getText().toString()))
                         {
-                            Users user = new Users(us.first_name, us.last_name, us.pat_name, pass_1.getText().toString(), replacePointComma(mail.getText().toString()), us.dormitory, us.notifications);
+                            Users user = null;
+                            try {
+                                user = new Users(us.first_name, us.last_name, us.pat_name, hashPass(pass_1.getText().toString()), replacePointComma(mail.getText().toString()), us.dormitory, us.notifications);
+                            } catch (NoSuchAlgorithmException e) {
+                                throw new RuntimeException(e);
+                            }
                             WMDataBase.child(replacePointComma(mail.getText().toString())).setValue(user);
                             Toast.makeText(getApplicationContext(), "Пароль изменён!", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(ForgotPassActivity.this, AuthorisationActivity.class);

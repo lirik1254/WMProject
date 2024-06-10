@@ -2,7 +2,9 @@ package org.hse.mylaundryapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
     private static DatabaseReference WMDataBase;
     private ImageButton showPassword;
     private boolean isShowPicture = false;
+    private ImageView profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +69,21 @@ public class ProfileActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences sharedPreferences = ProfileActivity.this.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isLoggedIn", false);
+                editor.apply();
                 Intent intent = new Intent(ProfileActivity.this, AuthorisationActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -77,10 +94,15 @@ public class ProfileActivity extends AppCompatActivity {
                     AuthorisationActivity.currentUser.first_name = first_name.getText().toString();
                     AuthorisationActivity.currentUser.last_name = last_name.getText().toString();
                     AuthorisationActivity.currentUser.pat_name = pat_name.getText().toString();
-                    Users updateUser = new Users(AuthorisationActivity.currentUser.first_name, AuthorisationActivity.currentUser.last_name,
-                            AuthorisationActivity.currentUser.pat_name, AuthorisationActivity.currentUser.password,
-                            AuthorisationActivity.currentUser.mail,
-                            AuthorisationActivity.currentUser.dormitory, AuthorisationActivity.currentUser.notifications);
+                    Users updateUser = null;
+                    try {
+                        updateUser = new Users(AuthorisationActivity.currentUser.first_name, AuthorisationActivity.currentUser.last_name,
+                                AuthorisationActivity.currentUser.pat_name, MainActivity.hashPass(AuthorisationActivity.currentUser.password),
+                                AuthorisationActivity.currentUser.mail,
+                                AuthorisationActivity.currentUser.dormitory, AuthorisationActivity.currentUser.notifications);
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
                     int dormitory = 0;
                     switch (dormitoryList.getSelectedItem().toString()) {
                         case "Пермь, ул. Уинская, д. 34" :
@@ -103,7 +125,11 @@ public class ProfileActivity extends AppCompatActivity {
                         AuthorisationActivity.currentUser.first_name = first_name.getText().toString();
                         AuthorisationActivity.currentUser.last_name = last_name.getText().toString();
                         AuthorisationActivity.currentUser.pat_name = pat_name.getText().toString();
-                        AuthorisationActivity.currentUser.password = pass1.getText().toString();
+                        try {
+                            AuthorisationActivity.currentUser.password = MainActivity.hashPass(pass1.getText().toString());
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
                         Users updateUser = new Users(AuthorisationActivity.currentUser.first_name, AuthorisationActivity.currentUser.last_name,
                                 AuthorisationActivity.currentUser.pat_name, AuthorisationActivity.currentUser.password, AuthorisationActivity.currentUser.mail,
                                 AuthorisationActivity.currentUser.dormitory, AuthorisationActivity.currentUser.notifications);
@@ -161,14 +187,27 @@ public class ProfileActivity extends AppCompatActivity {
         saveChangesButton = findViewById(R.id.saveChangesButton);
         WMDataBase = FirebaseDatabase.getInstance().getReference().child(USER_KEY);
         showPassword = findViewById(R.id.show_password);
+        profile = findViewById(R.id.profile);
     }
 
     public void setUserInfo() {
-        last_name.setText(AuthorisationActivity.currentUser.last_name);
-        first_name.setText(AuthorisationActivity.currentUser.first_name);
-        pat_name.setText(AuthorisationActivity.currentUser.pat_name);
-        mail.setText(MainActivity.replacePointComma(AuthorisationActivity.currentUser.mail));
-        dormitoryList.setSelection(AuthorisationActivity.currentUser.dormitory-1);
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+
+        if (isLoggedIn) {
+            last_name.setText(sharedPreferences.getString("last_name", "error"));
+            first_name.setText(sharedPreferences.getString("first_name", "error"));
+            pat_name.setText(sharedPreferences.getString("pat_name", "error"));
+            mail.setText(sharedPreferences.getString("mail", "error"));
+            dormitoryList.setSelection(sharedPreferences.getInt("dormitory", 1));
+        }
+        else {
+            last_name.setText(AuthorisationActivity.currentUser.last_name);
+            first_name.setText(AuthorisationActivity.currentUser.first_name);
+            pat_name.setText(AuthorisationActivity.currentUser.pat_name);
+            mail.setText(MainActivity.replacePointComma(AuthorisationActivity.currentUser.mail));
+            dormitoryList.setSelection(AuthorisationActivity.currentUser.dormitory - 1);
+        }
         pass1.setHint("Введите новый пароль..");
         pass2.setHint("Подтвердите новый пароль..");
     }

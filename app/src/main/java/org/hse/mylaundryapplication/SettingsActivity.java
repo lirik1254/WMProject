@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -117,6 +119,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeNots();
+                Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
             }
         });
         Toolbar toolbar = findViewById(R.id.toolbar).findViewById(R.id.my_toolbar);
@@ -128,6 +131,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Settings();
+                finish();
             }
         });
 
@@ -143,6 +147,10 @@ public class SettingsActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences sharedPreferences = SettingsActivity.this.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isLoggedIn", false);
+                editor.apply();
                 Intent intent = new Intent(SettingsActivity.this, AuthorisationActivity.class);
                 startActivity(intent);
                 finish();
@@ -210,7 +218,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    public  void getSlotsFromDB() {
+    public void getSlotsFromDB() {
         ValueEventListener vListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {

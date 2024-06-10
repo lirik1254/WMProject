@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -34,6 +36,11 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import com.google.common.hash.Hashing;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,8 +55,13 @@ public class MainActivity extends AppCompatActivity {
     private String CODE = "1234567890098765";
     static ArrayList<Users> listData = new ArrayList<>();
     private Spinner spinner;
+    MessageDigest digest = MessageDigest.getInstance("SHA-1");
 
     public static boolean isMessageSend = false;
+
+    public MainActivity() throws NoSuchAlgorithmException {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +93,12 @@ public class MainActivity extends AppCompatActivity {
                     String last_name_text = last_name.getText().toString();
                     String pat_name_text = pat_name.getText().toString();
                     String mail_text = replacePointComma(mail.getText().toString());
-                    String password_text = password.getText().toString();
+                    String password_text = null;
+                    try {
+                        password_text = hashPass(password.getText().toString());
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
                     int dormitory = 0;
                     switch(spinner.getSelectedItem().toString()) {
                         case "Пермь, ул. Уинская, д. 34" :
@@ -314,5 +331,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    public static String hashPass(String pass) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-1");
+        byte[] bytes = digest.digest(pass.getBytes());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (byte b : bytes) {
+            stringBuilder.append(String.format("%02X ", b));
+        }
+        return stringBuilder.toString();
     }
 }
