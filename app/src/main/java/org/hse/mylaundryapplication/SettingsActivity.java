@@ -77,7 +77,8 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_layout);
-        // userId =getIntent().getStringExtra('USER_ID');
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+        userId = sharedPreferences.getString("mail", "error");
         notificationToggler = findViewById(R.id.notification_switch);
         notificationLabel = findViewById(R.id.notification_label);
         logout = findViewById(R.id.logout);
@@ -118,6 +119,7 @@ public class SettingsActivity extends AppCompatActivity {
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 changeNots();
                 Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
             }

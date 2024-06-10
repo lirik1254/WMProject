@@ -41,7 +41,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
-
 public class MainActivity extends AppCompatActivity {
 
     private EditText last_name, first_name, pat_name, mail, password, confirm_password, code;
@@ -111,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
                             dormitory = 3;
                             break;
                     }
-
 
                     Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text, mail_text, dormitory, 0);
                     WMDataBase.child(mail_text).setValue(newUser);
@@ -342,4 +340,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return stringBuilder.toString();
     }
+
 }

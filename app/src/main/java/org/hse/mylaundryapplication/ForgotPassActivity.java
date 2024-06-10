@@ -1,6 +1,5 @@
 package org.hse.mylaundryapplication;
 
-import static org.hse.mylaundryapplication.MainActivity.hashPass;
 import static org.hse.mylaundryapplication.MainActivity.listData;
 
 import androidx.annotation.NonNull;
@@ -109,7 +108,7 @@ public class ForgotPassActivity extends AppCompatActivity {
                         {
                             Users user = null;
                             try {
-                                user = new Users(us.first_name, us.last_name, us.pat_name, hashPass(pass_1.getText().toString()), replacePointComma(mail.getText().toString()), us.dormitory, us.notifications);
+                                user = new Users(us.first_name, us.last_name, us.pat_name, MainActivity.hashPass(pass_1.getText().toString()), replacePointComma(mail.getText().toString()), us.dormitory, us.notifications);
                             } catch (NoSuchAlgorithmException e) {
                                 throw new RuntimeException(e);
                             }

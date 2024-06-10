@@ -2,9 +2,7 @@ package org.hse.mylaundryapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -16,11 +14,14 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Context;
+import java.security.NoSuchAlgorithmException;
+import android.content.SharedPreferences;
+
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView settings;
     private ImageView logout;
     private ImageView slots;
+    private ImageView profile;
     private EditText pass1;
     private EditText pass2;
     private Button saveChangesButton;
@@ -41,7 +43,6 @@ public class ProfileActivity extends AppCompatActivity {
     private static DatabaseReference WMDataBase;
     private ImageButton showPassword;
     private boolean isShowPicture = false;
-    private ImageView profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,18 +92,15 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (pass1.getText().toString().isEmpty() && pass2.getText().toString().isEmpty()) {
-                    AuthorisationActivity.currentUser.first_name = first_name.getText().toString();
-                    AuthorisationActivity.currentUser.last_name = last_name.getText().toString();
-                    AuthorisationActivity.currentUser.pat_name = pat_name.getText().toString();
-                    Users updateUser = null;
-                    try {
-                        updateUser = new Users(AuthorisationActivity.currentUser.first_name, AuthorisationActivity.currentUser.last_name,
-                                AuthorisationActivity.currentUser.pat_name, MainActivity.hashPass(AuthorisationActivity.currentUser.password),
-                                AuthorisationActivity.currentUser.mail,
-                                AuthorisationActivity.currentUser.dormitory, AuthorisationActivity.currentUser.notifications);
-                    } catch (NoSuchAlgorithmException e) {
-                        throw new RuntimeException(e);
-                    }
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("first_name", first_name.getText().toString());
+                    editor.putString("last_name", last_name.getText().toString());
+                    editor.putString("pat_name", pat_name.getText().toString());
+                    Users updateUser = new Users(sharedPreferences.getString("first_name", "error"), sharedPreferences.getString("last_name", "error"),
+                            sharedPreferences.getString("pat_name", "error"), sharedPreferences.getString("password", "error"),
+                            sharedPreferences.getString("mail", "error"),
+                            sharedPreferences.getInt("dormitory", 1), sharedPreferences.getInt("notifications", 0));
                     int dormitory = 0;
                     switch (dormitoryList.getSelectedItem().toString()) {
                         case "Пермь, ул. Уинская, д. 34" :
@@ -115,24 +113,28 @@ public class ProfileActivity extends AppCompatActivity {
                             dormitory = 3;
                             break;
                     }
-                    AuthorisationActivity.currentUser.dormitory = dormitory;
-                    updateUser.dormitory = AuthorisationActivity.currentUser.dormitory;
+                    updateUser.dormitory = dormitory;
+                    editor.putInt("dormitory", updateUser.dormitory);
+                    editor.apply();
                     WMDataBase.child(updateUser.mail).setValue(updateUser);
                     Toast.makeText(getApplicationContext(), "Изменение сохранены!", Toast.LENGTH_LONG).show();
                 }
                 else {
                     if (check_password()) {
-                        AuthorisationActivity.currentUser.first_name = first_name.getText().toString();
-                        AuthorisationActivity.currentUser.last_name = last_name.getText().toString();
-                        AuthorisationActivity.currentUser.pat_name = pat_name.getText().toString();
+                        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("first_name", first_name.getText().toString());
+                        editor.putString("last_name", last_name.getText().toString());
+                        editor.putString("pat_name", pat_name.getText().toString());
                         try {
-                            AuthorisationActivity.currentUser.password = MainActivity.hashPass(pass1.getText().toString());
+                            editor.putString("password", MainActivity.hashPass(pass1.getText().toString()));
                         } catch (NoSuchAlgorithmException e) {
                             throw new RuntimeException(e);
                         }
-                        Users updateUser = new Users(AuthorisationActivity.currentUser.first_name, AuthorisationActivity.currentUser.last_name,
-                                AuthorisationActivity.currentUser.pat_name, AuthorisationActivity.currentUser.password, AuthorisationActivity.currentUser.mail,
-                                AuthorisationActivity.currentUser.dormitory, AuthorisationActivity.currentUser.notifications);
+                        Users updateUser = new Users(sharedPreferences.getString("first_name", "error"), sharedPreferences.getString("last_name", "error"),
+                                sharedPreferences.getString("pat_name", "error"), sharedPreferences.getString("password", "error"),
+                                sharedPreferences.getString("mail", "error"),
+                                sharedPreferences.getInt("dormitory", 1), sharedPreferences.getInt("notifications", 0));
                         int dormitory = 0;
                         switch (dormitoryList.getSelectedItem().toString()) {
                             case "Пермь, ул. Уинская, д. 34" :
@@ -145,8 +147,18 @@ public class ProfileActivity extends AppCompatActivity {
                                 dormitory = 3;
                                 break;
                         }
-                        AuthorisationActivity.currentUser.dormitory = dormitory;
-                        updateUser.dormitory = AuthorisationActivity.currentUser.dormitory;
+
+                        try {
+                            updateUser.password = MainActivity.hashPass(pass1.getText().toString());
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        updateUser.dormitory = dormitory;
+
+                        editor.putInt("dormitory", updateUser.dormitory);
+                        editor.putString("password", AuthorisationActivity.currentUser.password);
+
                         WMDataBase.child(updateUser.mail).setValue(updateUser);
                         Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
                     }
@@ -192,22 +204,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void setUserInfo() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
-        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
 
-        if (isLoggedIn) {
-            last_name.setText(sharedPreferences.getString("last_name", "error"));
-            first_name.setText(sharedPreferences.getString("first_name", "error"));
-            pat_name.setText(sharedPreferences.getString("pat_name", "error"));
-            mail.setText(sharedPreferences.getString("mail", "error"));
-            dormitoryList.setSelection(sharedPreferences.getInt("dormitory", 1));
-        }
-        else {
-            last_name.setText(AuthorisationActivity.currentUser.last_name);
-            first_name.setText(AuthorisationActivity.currentUser.first_name);
-            pat_name.setText(AuthorisationActivity.currentUser.pat_name);
-            mail.setText(MainActivity.replacePointComma(AuthorisationActivity.currentUser.mail));
-            dormitoryList.setSelection(AuthorisationActivity.currentUser.dormitory - 1);
-        }
+        last_name.setText(sharedPreferences.getString("last_name", "error"));
+        first_name.setText(sharedPreferences.getString("first_name", "error"));
+        pat_name.setText(sharedPreferences.getString("pat_name", "error"));
+        mail.setText(sharedPreferences.getString("mail", "error"));
+        dormitoryList.setSelection(sharedPreferences.getInt("dormitory", 1)-1);
         pass1.setHint("Введите новый пароль..");
         pass2.setHint("Подтвердите новый пароль..");
     }

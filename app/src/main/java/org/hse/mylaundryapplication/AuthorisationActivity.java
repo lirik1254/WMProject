@@ -50,12 +50,11 @@ public class AuthorisationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if (loginPasswordCheck())
-                    {
+                    if (loginPasswordCheck()) {
                         Toast.makeText(getApplicationContext(), "Вы успешно авторизованы!", Toast.LENGTH_LONG).show();
-                        for (Users us: MainActivity.listData) {
+                        for (Users us : MainActivity.listData) {
                             if (us.mail.equals(MainActivity.replacePointComma(mail.getText().toString()))) {
-                                currentUser = new Users(us.first_name, us.last_name, us.pat_name, us.password,  us.mail, us.dormitory, us.notifications);
+                                currentUser = new Users(us.first_name, us.last_name, us.pat_name, us.password, us.mail, us.dormitory, us.notifications);
                                 saveUser(AuthorisationActivity.this, us.first_name, us.last_name, us.pat_name, us.password, us.mail, us.dormitory, us.notifications);
                             }
                         }
@@ -63,8 +62,7 @@ public class AuthorisationActivity extends AppCompatActivity {
                         Intent intent = new Intent(AuthorisationActivity.this, SlotsActivity.class);
                         startActivity(intent);
                         finish();
-                    }
-                    else {
+                    } else {
                         if (mail.getText().toString().equals("") && password.getText().toString().equals(""))
                             Toast.makeText(getApplicationContext(), "Введите почту и пароль!", Toast.LENGTH_LONG).show();
                         else if (password.getText().toString().equals(""))
@@ -137,6 +135,7 @@ public class AuthorisationActivity extends AppCompatActivity {
         return false;
     }
 
+
     public void saveUserLoginState(Context context, boolean isLoggedIn) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -156,5 +155,4 @@ public class AuthorisationActivity extends AppCompatActivity {
         editor.putInt("notifications", notifications);
         editor.apply();
     }
-
 }
