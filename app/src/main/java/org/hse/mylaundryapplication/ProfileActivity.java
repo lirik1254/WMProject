@@ -97,6 +97,7 @@ public class ProfileActivity extends AppCompatActivity {
                     editor.putString("first_name", first_name.getText().toString());
                     editor.putString("last_name", last_name.getText().toString());
                     editor.putString("pat_name", pat_name.getText().toString());
+                    editor.apply();
                     Users updateUser = new Users(sharedPreferences.getString("first_name", "error"), sharedPreferences.getString("last_name", "error"),
                             sharedPreferences.getString("pat_name", "error"), sharedPreferences.getString("password", "error"),
                             sharedPreferences.getString("mail", "error"),
@@ -117,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
                     editor.putInt("dormitory", updateUser.dormitory);
                     editor.apply();
                     WMDataBase.child(updateUser.mail).setValue(updateUser);
-                    Toast.makeText(getApplicationContext(), "Изменение сохранены!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
                 }
                 else {
                     if (check_password()) {
@@ -157,10 +158,12 @@ public class ProfileActivity extends AppCompatActivity {
                         updateUser.dormitory = dormitory;
 
                         editor.putInt("dormitory", updateUser.dormitory);
-                        editor.putString("password", AuthorisationActivity.currentUser.password);
+                        editor.putString("password", updateUser.password);
 
                         WMDataBase.child(updateUser.mail).setValue(updateUser);
                         Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
+                        pass1.setText("");
+                        pass2.setText("");
                     }
                 }
             }
@@ -208,7 +211,7 @@ public class ProfileActivity extends AppCompatActivity {
         last_name.setText(sharedPreferences.getString("last_name", "error"));
         first_name.setText(sharedPreferences.getString("first_name", "error"));
         pat_name.setText(sharedPreferences.getString("pat_name", "error"));
-        mail.setText(sharedPreferences.getString("mail", "error"));
+        mail.setText(MainActivity.replacePointComma(sharedPreferences.getString("mail", "error"))) ;
         dormitoryList.setSelection(sharedPreferences.getInt("dormitory", 1)-1);
         pass1.setHint("Введите новый пароль..");
         pass2.setHint("Подтвердите новый пароль..");
