@@ -99,7 +99,8 @@ public class SlotsActivity extends AppCompatActivity {
         adapter = new ItemAdapter(this::onScheduleItemClick);
         recyclerView.setAdapter(adapter);
         init();
-       // userId =getIntent().getStringExtra('USER_ID');
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+        userId = sharedPreferences.getString("mail", "error");
         WMDataBaseUsers = FirebaseDatabase.getInstance().getReference().child(USERS_KEY);
         WMDataBaseWM = FirebaseDatabase.getInstance().getReference().child(WASHING_MACHINES_KEY);
         WMDataBaseSlots = FirebaseDatabase.getInstance().getReference().child(SLOTS_KEY);
@@ -138,7 +139,7 @@ public class SlotsActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = SlotsActivity.this.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences =  SlotsActivity.this.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("isLoggedIn", false);
                 editor.apply();
