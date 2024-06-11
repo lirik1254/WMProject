@@ -3,6 +3,9 @@ package org.hse.mylaundryapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -49,34 +52,39 @@ public class AuthorisationActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    if (loginPasswordCheck()) {
-                        Toast.makeText(getApplicationContext(), "Вы успешно авторизованы!", Toast.LENGTH_LONG).show();
-                        for (Users us : MainActivity.listData) {
-                            if (us.mail.equals(MainActivity.replacePointComma(mail.getText().toString()))) {
-                                currentUser = new Users(us.first_name, us.last_name, us.pat_name, us.password, us.mail, us.dormitory, us.notifications);
-                                saveUser(AuthorisationActivity.this, us.first_name, us.last_name, us.pat_name, us.password, us.mail, us.dormitory, us.notifications);
+                if (isInternetAvailable(AuthorisationActivity.this)) {
+                    try {
+                        if (loginPasswordCheck()) {
+                            Toast.makeText(getApplicationContext(), "Вы успешно авторизованы!", Toast.LENGTH_LONG).show();
+                            for (Users us : MainActivity.listData) {
+                                if (us.mail.equals(MainActivity.replacePointComma(mail.getText().toString()))) {
+                                    currentUser = new Users(us.first_name, us.last_name, us.pat_name, us.password, us.mail, us.dormitory, us.notifications);
+                                    saveUser(AuthorisationActivity.this, us.first_name, us.last_name, us.pat_name, us.password, us.mail, us.dormitory, us.notifications);
+                                }
+                            }
+                            saveUserLoginState(AuthorisationActivity.this, true);
+                            Intent intent = new Intent(AuthorisationActivity.this, SlotsActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            if (mail.getText().toString().equals("") && password.getText().toString().equals(""))
+                                Toast.makeText(getApplicationContext(), "Введите почту и пароль!", Toast.LENGTH_LONG).show();
+                            else if (password.getText().toString().equals(""))
+                                Toast.makeText(getApplicationContext(), "Введите пароль!", Toast.LENGTH_LONG).show();
+                            else if (mail.getText().toString().equals(""))
+                                Toast.makeText(getApplicationContext(), "Введите логин!", Toast.LENGTH_LONG).show();
+                            else {
+                                Toast.makeText(getApplicationContext(), "Неверно введён логин или пароль!", Toast.LENGTH_LONG).show();
+                                mail.setText("");
+                                password.setText("");
                             }
                         }
-                        saveUserLoginState(AuthorisationActivity.this, true);
-                        Intent intent = new Intent(AuthorisationActivity.this, SlotsActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        if (mail.getText().toString().equals("") && password.getText().toString().equals(""))
-                            Toast.makeText(getApplicationContext(), "Введите почту и пароль!", Toast.LENGTH_LONG).show();
-                        else if (password.getText().toString().equals(""))
-                            Toast.makeText(getApplicationContext(), "Введите пароль!", Toast.LENGTH_LONG).show();
-                        else if (mail.getText().toString().equals(""))
-                            Toast.makeText(getApplicationContext(), "Введите логин!", Toast.LENGTH_LONG).show();
-                        else {
-                            Toast.makeText(getApplicationContext(), "Неверно введён логин или пароль!", Toast.LENGTH_LONG).show();
-                            mail.setText("");
-                            password.setText("");
-                        }
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
                     }
-                } catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException(e);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -154,5 +162,23 @@ public class AuthorisationActivity extends AppCompatActivity {
         editor.putInt("dormitory", dormitory);
         editor.putInt("notifications", notifications);
         editor.apply();
+    }
+
+    public static boolean isInternetAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            android.net.Network network = connectivityManager.getActiveNetwork();
+            if (network == null) {
+                return false;
+            }
+            NetworkCapabilities activeNetwork = connectivityManager.getNetworkCapabilities(network);
+            if (activeNetwork == null) {
+                return false;
+            }
+            return activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET);
+        }
+        return false;
     }
 }

@@ -74,51 +74,63 @@ public class ForgotPassActivity extends AppCompatActivity {
         send_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mailcheck() && checkRegistration(replacePointComma(mail.getText().toString()))) {
-                    Log.d("code", new SendEmailTask().execute(mail.getText().toString()).toString());
+                if (AuthorisationActivity.isInternetAvailable(ForgotPassActivity.this)) {
+                    if (mailcheck() && checkRegistration(replacePointComma(mail.getText().toString()))) {
+                        Log.d("code", new SendEmailTask().execute(mail.getText().toString()).toString());
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
                 }
             }
         });
         check_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (code_mail.getText().toString().equals(CODE)) {
-                    code_mail.setEnabled(false);
-                    mail.setEnabled(false);
-                    check_code.setEnabled(false);
-                    send_code.setEnabled(false);
-                    Toast.makeText(getApplicationContext(), "Почта подтверждена!", Toast.LENGTH_LONG).show();
-                    isConfirmMail = true;
+                if (AuthorisationActivity.isInternetAvailable(ForgotPassActivity.this)) {
+                    if (code_mail.getText().toString().equals(CODE)) {
+                        code_mail.setEnabled(false);
+                        mail.setEnabled(false);
+                        check_code.setEnabled(false);
+                        send_code.setEnabled(false);
+                        Toast.makeText(getApplicationContext(), "Почта подтверждена!", Toast.LENGTH_LONG).show();
+                        isConfirmMail = true;
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Неверно введен код!", Toast.LENGTH_LONG).show();
+                        code_mail.setText("");
+                    }
                 }
-                else {
-                    Toast.makeText(getApplicationContext(), "Неверно введен код!", Toast.LENGTH_LONG).show();
-                    code_mail.setText("");
-                }
+                else
+                    Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
             }
         });
 
         set_new_pass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isConfirmMail)
-                    Toast.makeText(getApplicationContext(), "Сначала нужно подтвердить почту!", Toast.LENGTH_LONG).show();
-                else if (check_password()) {
-                    for (Users us : listData) {
-                        if (replacePointComma(us.mail).equals(mail.getText().toString()))
-                        {
-                            Users user = null;
-                            try {
-                                user = new Users(us.first_name, us.last_name, us.pat_name, MainActivity.hashPass(pass_1.getText().toString()), replacePointComma(mail.getText().toString()), us.dormitory, us.notifications);
-                            } catch (NoSuchAlgorithmException e) {
-                                throw new RuntimeException(e);
+                if (AuthorisationActivity.isInternetAvailable(ForgotPassActivity.this)) {
+                    if (!isConfirmMail)
+                        Toast.makeText(getApplicationContext(), "Сначала нужно подтвердить почту!", Toast.LENGTH_LONG).show();
+                    else if (check_password()) {
+                        for (Users us : listData) {
+                            if (replacePointComma(us.mail).equals(mail.getText().toString())) {
+                                Users user = null;
+                                try {
+                                    user = new Users(us.first_name, us.last_name, us.pat_name, MainActivity.hashPass(pass_1.getText().toString()), replacePointComma(mail.getText().toString()), us.dormitory, us.notifications);
+                                } catch (NoSuchAlgorithmException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                WMDataBase.child(replacePointComma(mail.getText().toString())).setValue(user);
+                                Toast.makeText(getApplicationContext(), "Пароль изменён!", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(ForgotPassActivity.this, AuthorisationActivity.class);
+                                startActivity(intent);
+                                return;
                             }
-                            WMDataBase.child(replacePointComma(mail.getText().toString())).setValue(user);
-                            Toast.makeText(getApplicationContext(), "Пароль изменён!", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(ForgotPassActivity.this, AuthorisationActivity.class);
-                            startActivity(intent);
-                            return;
                         }
                     }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
                 }
             }
         });

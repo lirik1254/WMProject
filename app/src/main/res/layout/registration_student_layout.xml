@@ -46,6 +46,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/register_label">
 
         <LinearLayout
@@ -116,27 +118,12 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="45dp"
-                    android:layout_marginBottom="45dp"
-                    android:layout_weight="50"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/app_name"
-                    android:maxWidth="50dp"
-                    android:maxHeight="150dp"
-                    android:scaleType="fitStart"
-
-                    android:src="@drawable/avatar_base" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/pass"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="605dp"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/mail_check">
 
@@ -181,8 +168,8 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="304dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="299dp"
+                        android:layout_height="87dp"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -199,8 +186,8 @@
                                 tools:text="Введите код:" />
 
                             <LinearLayout
-                                android:layout_width="270dp"
-                                android:layout_height="38dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="58dp"
                                 android:orientation="horizontal">
 
                                 <EditText
@@ -260,7 +247,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="327dp"
+                        android:layout_width="285dp"
                         android:layout_height="match_parent"
                         android:layout_weight="70"
                         android:orientation="vertical">
@@ -294,14 +281,14 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="41dp"
-                        android:layout_height="44dp"
+                        android:layout_width="86dp"
+                        android:layout_height="63dp"
                         android:layout_weight="70"
                         android:orientation="vertical">
 
                         <ImageButton
                             android:id="@+id/show_password"
-                            android:layout_width="match_parent"
+                            android:layout_width="57dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="70"
@@ -321,29 +308,6 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/register_button" />
 
-                <TextView
-                    android:id="@+id/notRegist"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/im_registered"
-                    android:theme="@style/MyLabelStyle" />
-
-                <TextView
-                    android:id="@+id/watchman"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/im_watchman"
-                    android:theme="@style/MyLabelStyle" />
-
-                <TextView
-                    android:id="@+id/forgot_pass"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/forgot_pass"
-                    android:theme="@style/MyLabelStyle" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

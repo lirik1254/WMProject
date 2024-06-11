@@ -86,6 +86,8 @@ public class SlotsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.slots_layout);
+        if (!AuthorisationActivity.isInternetAvailable(SlotsActivity.this))
+            Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
         chosen_slot = findViewById(R.id.chosen_slot);
         delete_slot = findViewById(R.id.reset_chosen_slot);
         logout = findViewById(R.id.logout);
@@ -111,7 +113,11 @@ public class SlotsActivity extends AppCompatActivity {
         delete_slot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             delete_chosen_slot();
+                if (AuthorisationActivity.isInternetAvailable(SlotsActivity.this)) {
+                    delete_chosen_slot();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
             }
         });
         Toolbar toolbar = findViewById(R.id.toolbar).findViewById(R.id.my_toolbar);
@@ -509,7 +515,7 @@ public class SlotsActivity extends AppCompatActivity {
     public void init() {
         reset_slot_button = findViewById(R.id.reset_chosen_slot);
     }
-    public final static class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public final class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private final static int TYPE_ITEM = 0;
 
         private List<ScheduleItem> dataList = new ArrayList<>();
@@ -567,7 +573,7 @@ public class SlotsActivity extends AppCompatActivity {
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private Context context;
         private ScheduleItem.OnItemClick onItemClick;
         private TextView floor;
@@ -592,70 +598,105 @@ public class SlotsActivity extends AppCompatActivity {
             time_1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        if (checkTime(time_1.getText().toString())  && get_chosen_slot_by_time_floor(time_1.getText().toString(), floor.getText().toString())) {
+                    if (AuthorisationActivity.isInternetAvailable(SlotsActivity.this)) {//Если не робит, сделать VIEW HOLDER
+                        if (checkTime(time_1.getText().toString()) && get_chosen_slot_by_time_floor(time_1.getText().toString(), floor.getText().toString())) {
                             Log.d("MYGOT", "it is available");
                             if (user_does_not_laundry()) {
                                 chooseSlot((String) floor.getText(), (String) time_1.getText());
-                            }}
-                        else {
+                            }
+                        } else {
                             Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
                             Log.d("MYGOT", "it isnt available");
-                        }}
+                        }
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
+                }
             });
             time_2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (checkTime(time_2.getText().toString())  && get_chosen_slot_by_time_floor(time_2.getText().toString(), floor.getText().toString())) {
-                        Log.d("MYGOT", "it is available");
-                        if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_2.getText());
-                       } else {
-                        Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
-                        Log.d("MYGOT", "it isnt available");
-                    }}
+                    if (AuthorisationActivity.isInternetAvailable(SlotsActivity.this)) {
+                        if (checkTime(time_2.getText().toString()) && get_chosen_slot_by_time_floor(time_2.getText().toString(), floor.getText().toString())) {
+                            Log.d("MYGOT", "it is available");
+                            if (user_does_not_laundry())
+                                chooseSlot((String) floor.getText(), (String) time_2.getText());
+                        } else {
+                            Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
+                            Log.d("MYGOT", "it isnt available");
+                        }
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
+                }
             });
             time_3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if ( checkTime(time_3.getText().toString())  && get_chosen_slot_by_time_floor(time_3.getText().toString(), floor.getText().toString())) {
-                        Log.d("MYGOT", "it is available");
-                        if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_3.getText());
-                     } else {
-                        Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
-                        Log.d("MYGOT", "it isnt available");
-                    }}
+                    if (AuthorisationActivity.isInternetAvailable(SlotsActivity.this)) {
+                        if (checkTime(time_3.getText().toString()) && get_chosen_slot_by_time_floor(time_3.getText().toString(), floor.getText().toString())) {
+                            Log.d("MYGOT", "it is available");
+                            if (user_does_not_laundry())
+                                chooseSlot((String) floor.getText(), (String) time_3.getText());
+                        } else {
+                            Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
+                            Log.d("MYGOT", "it isnt available");
+                        }
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
+                }
             });
             time_4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (checkTime(time_4.getText().toString())  && get_chosen_slot_by_time_floor(time_4.getText().toString(), floor.getText().toString())) {
-                        Log.d("MYGOT", "it is available");
-                        if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_4.getText());
-                    } else {
-                        Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
-                        Log.d("MYGOT", "it isnt available");
-                    }}
+                    if (AuthorisationActivity.isInternetAvailable(SlotsActivity.this)) {
+                        if (checkTime(time_4.getText().toString()) && get_chosen_slot_by_time_floor(time_4.getText().toString(), floor.getText().toString())) {
+                            Log.d("MYGOT", "it is available");
+                            if (user_does_not_laundry())
+                                chooseSlot((String) floor.getText(), (String) time_4.getText());
+                        } else {
+                            Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
+                            Log.d("MYGOT", "it isnt available");
+                        }
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
+                }
             });
             time_5.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (checkTime(time_5.getText().toString())  && get_chosen_slot_by_time_floor(time_5.getText().toString(), floor.getText().toString())) {
-                        Log.d("MYGOT", "it is available");
-                        if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_5.getText());
-                   } else {
-                        Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
-                        Log.d("MYGOT", "it isnt available");
-                    }}
+                    if (AuthorisationActivity.isInternetAvailable(SlotsActivity.this)) {
+                        if (checkTime(time_5.getText().toString()) && get_chosen_slot_by_time_floor(time_5.getText().toString(), floor.getText().toString())) {
+                            Log.d("MYGOT", "it is available");
+                            if (user_does_not_laundry())
+                                chooseSlot((String) floor.getText(), (String) time_5.getText());
+                        } else {
+                            Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
+                            Log.d("MYGOT", "it isnt available");
+                        }
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
+                }
             });
             time_6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (checkTime(time_6.getText().toString()) && get_chosen_slot_by_time_floor(time_6.getText().toString(), floor.getText().toString())) {
-                        Log.d("MYGOT", "it is available");
-                       if (user_does_not_laundry()) chooseSlot((String) floor.getText(), (String) time_6.getText());
-                    } else {
-                        Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
-                        Log.d("MYGOT", "it isnt available");
-                    }}
+                    if (AuthorisationActivity.isInternetAvailable(SlotsActivity.this)) {
+                        if (checkTime(time_6.getText().toString()) && get_chosen_slot_by_time_floor(time_6.getText().toString(), floor.getText().toString())) {
+                            Log.d("MYGOT", "it is available");
+                            if (user_does_not_laundry())
+                                chooseSlot((String) floor.getText(), (String) time_6.getText());
+                        } else {
+                            Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show();
+                            Log.d("MYGOT", "it isnt available");
+                        }
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
+                }
             });
         }
 

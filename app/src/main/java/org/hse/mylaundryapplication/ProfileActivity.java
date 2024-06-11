@@ -91,54 +91,21 @@ public class ProfileActivity extends AppCompatActivity {
         saveChangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pass1.getText().toString().isEmpty() && pass2.getText().toString().isEmpty()) {
-                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("first_name", first_name.getText().toString());
-                    editor.putString("last_name", last_name.getText().toString());
-                    editor.putString("pat_name", pat_name.getText().toString());
-                    editor.apply();
-                    Users updateUser = new Users(sharedPreferences.getString("first_name", "error"), sharedPreferences.getString("last_name", "error"),
-                            sharedPreferences.getString("pat_name", "error"), sharedPreferences.getString("password", "error"),
-                            sharedPreferences.getString("mail", "error"),
-                            sharedPreferences.getInt("dormitory", 1), sharedPreferences.getInt("notifications", 0));
-                    int dormitory = 0;
-                    switch (dormitoryList.getSelectedItem().toString()) {
-                        case "Пермь, ул. Уинская, д. 34" :
-                            dormitory = 1;
-                            break;
-                        case "Пермь, бульвар Гагарина, д. 37А":
-                            dormitory = 2;
-                            break;
-                        default:
-                            dormitory = 3;
-                            break;
-                    }
-                    updateUser.dormitory = dormitory;
-                    editor.putInt("dormitory", updateUser.dormitory);
-                    editor.apply();
-                    WMDataBase.child(updateUser.mail).setValue(updateUser);
-                    Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    if (check_password()) {
+                if (AuthorisationActivity.isInternetAvailable(ProfileActivity.this)) {
+                    if (pass1.getText().toString().isEmpty() && pass2.getText().toString().isEmpty()) {
                         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("first_name", first_name.getText().toString());
                         editor.putString("last_name", last_name.getText().toString());
                         editor.putString("pat_name", pat_name.getText().toString());
-                        try {
-                            editor.putString("password", MainActivity.hashPass(pass1.getText().toString()));
-                        } catch (NoSuchAlgorithmException e) {
-                            throw new RuntimeException(e);
-                        }
+                        editor.apply();
                         Users updateUser = new Users(sharedPreferences.getString("first_name", "error"), sharedPreferences.getString("last_name", "error"),
                                 sharedPreferences.getString("pat_name", "error"), sharedPreferences.getString("password", "error"),
                                 sharedPreferences.getString("mail", "error"),
                                 sharedPreferences.getInt("dormitory", 1), sharedPreferences.getInt("notifications", 0));
                         int dormitory = 0;
                         switch (dormitoryList.getSelectedItem().toString()) {
-                            case "Пермь, ул. Уинская, д. 34" :
+                            case "Пермь, ул. Уинская, д. 34":
                                 dormitory = 1;
                                 break;
                             case "Пермь, бульвар Гагарина, д. 37А":
@@ -148,23 +115,60 @@ public class ProfileActivity extends AppCompatActivity {
                                 dormitory = 3;
                                 break;
                         }
-
-                        try {
-                            updateUser.password = MainActivity.hashPass(pass1.getText().toString());
-                        } catch (NoSuchAlgorithmException e) {
-                            throw new RuntimeException(e);
-                        }
-
                         updateUser.dormitory = dormitory;
-
                         editor.putInt("dormitory", updateUser.dormitory);
-                        editor.putString("password", updateUser.password);
-
+                        editor.apply();
                         WMDataBase.child(updateUser.mail).setValue(updateUser);
                         Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
-                        pass1.setText("");
-                        pass2.setText("");
+                    } else {
+                        if (check_password()) {
+                            SharedPreferences sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("first_name", first_name.getText().toString());
+                            editor.putString("last_name", last_name.getText().toString());
+                            editor.putString("pat_name", pat_name.getText().toString());
+                            try {
+                                editor.putString("password", MainActivity.hashPass(pass1.getText().toString()));
+                            } catch (NoSuchAlgorithmException e) {
+                                throw new RuntimeException(e);
+                            }
+                            Users updateUser = new Users(sharedPreferences.getString("first_name", "error"), sharedPreferences.getString("last_name", "error"),
+                                    sharedPreferences.getString("pat_name", "error"), sharedPreferences.getString("password", "error"),
+                                    sharedPreferences.getString("mail", "error"),
+                                    sharedPreferences.getInt("dormitory", 1), sharedPreferences.getInt("notifications", 0));
+                            int dormitory = 0;
+                            switch (dormitoryList.getSelectedItem().toString()) {
+                                case "Пермь, ул. Уинская, д. 34":
+                                    dormitory = 1;
+                                    break;
+                                case "Пермь, бульвар Гагарина, д. 37А":
+                                    dormitory = 2;
+                                    break;
+                                default:
+                                    dormitory = 3;
+                                    break;
+                            }
+
+                            try {
+                                updateUser.password = MainActivity.hashPass(pass1.getText().toString());
+                            } catch (NoSuchAlgorithmException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            updateUser.dormitory = dormitory;
+
+                            editor.putInt("dormitory", updateUser.dormitory);
+                            editor.putString("password", updateUser.password);
+
+                            WMDataBase.child(updateUser.mail).setValue(updateUser);
+                            Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
+                            pass1.setText("");
+                            pass2.setText("");
+                        }
                     }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
                 }
             }
         });

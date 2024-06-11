@@ -119,9 +119,18 @@ public class SettingsActivity extends AppCompatActivity {
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (AuthorisationActivity.isInternetAvailable(SettingsActivity.this)) {
+                    changeNots();
+                    Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
+                    SharedPreferences sharedPreferences = SettingsActivity.this.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("nots", nots);
+                    editor.putBoolean("isChecked", notificationToggler.isChecked());
+                    editor.apply();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
 
-                changeNots();
-                Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
             }
         });
         Toolbar toolbar = findViewById(R.id.toolbar).findViewById(R.id.my_toolbar);
@@ -167,6 +176,10 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        if (!AuthorisationActivity.isInternetAvailable(SettingsActivity.this)) {
+            notificationToggler.setChecked(sharedPreferences.getBoolean("isChecked", false));
+            spinner.setSelection(Arrays.asList(timeArray).indexOf(sharedPreferences.getInt("nots", 5)));
+        }
     }
     private void Settings() {
         Intent intent = new Intent(this, SettingsActivity.class);

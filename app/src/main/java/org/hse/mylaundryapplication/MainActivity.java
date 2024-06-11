@@ -87,40 +87,44 @@ public class MainActivity extends AppCompatActivity {
         registration_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (check_password() && isConfirmMail) {
-                    String first_name_text = first_name.getText().toString();
-                    String last_name_text = last_name.getText().toString();
-                    String pat_name_text = pat_name.getText().toString();
-                    String mail_text = replacePointComma(mail.getText().toString());
-                    String password_text = null;
-                    try {
-                        password_text = hashPass(password.getText().toString());
-                    } catch (NoSuchAlgorithmException e) {
-                        throw new RuntimeException(e);
-                    }
-                    int dormitory = 0;
-                    switch(spinner.getSelectedItem().toString()) {
-                        case "Пермь, ул. Уинская, д. 34" :
-                            dormitory = 1;
-                            break;
-                        case "Пермь, бульвар Гагарина, д. 37А":
-                            dormitory = 2;
-                            break;
-                        default:
-                            dormitory = 3;
-                            break;
-                    }
+                if (AuthorisationActivity.isInternetAvailable(MainActivity.this)) {
+                    if (check_password() && isConfirmMail) {
+                        String first_name_text = first_name.getText().toString();
+                        String last_name_text = last_name.getText().toString();
+                        String pat_name_text = pat_name.getText().toString();
+                        String mail_text = replacePointComma(mail.getText().toString());
+                        String password_text = null;
+                        try {
+                            password_text = hashPass(password.getText().toString());
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
+                        int dormitory = 0;
+                        switch (spinner.getSelectedItem().toString()) {
+                            case "Пермь, ул. Уинская, д. 34":
+                                dormitory = 1;
+                                break;
+                            case "Пермь, бульвар Гагарина, д. 37А":
+                                dormitory = 2;
+                                break;
+                            default:
+                                dormitory = 3;
+                                break;
+                        }
 
-                    Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text, mail_text, dormitory, 0);
-                    WMDataBase.child(mail_text).setValue(newUser);
-                    Toast.makeText(getApplicationContext(), "Регистрация прошла успешно!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(MainActivity.this, AuthorisationActivity.class);
-                    startActivity(intent);
-                    finish();
+                        Users newUser = new Users(first_name_text, last_name_text, pat_name_text, password_text, mail_text, dormitory, 0);
+                        WMDataBase.child(mail_text).setValue(newUser);
+                        Toast.makeText(getApplicationContext(), "Регистрация прошла успешно!", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this, AuthorisationActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        if (!isConfirmMail)
+                            Toast.makeText(getApplicationContext(), "Сначала подтвердите почту", Toast.LENGTH_LONG).show();
+                    }
                 }
                 else {
-                    if (!isConfirmMail)
-                        Toast.makeText(getApplicationContext(), "Сначала подтвердите почту", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -128,9 +132,13 @@ public class MainActivity extends AppCompatActivity {
         send_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mailcheck() && checkRegistration(replacePointComma(mail.getText().toString()))) {
-                    Log.d("code", new SendEmailTask().execute(mail.getText().toString()).toString());
+                if (AuthorisationActivity.isInternetAvailable(MainActivity.this)) {
+                    if (mailcheck() && checkRegistration(replacePointComma(mail.getText().toString()))) {
+                        Log.d("code", new SendEmailTask().execute(mail.getText().toString()).toString());
+                    }
                 }
+                else
+                    Toast.makeText(getApplicationContext(), "Проверьте подключение к сети", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -157,18 +165,21 @@ public class MainActivity extends AppCompatActivity {
         check_code_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (code.getText().toString().equals(CODE)) {
-                    code.setEnabled(false);
-                    mail.setEnabled(false);
-                    check_code_button.setEnabled(false);
-                    send_code.setEnabled(false);
-                    Toast.makeText(getApplicationContext(), "Почта подтверждена!", Toast.LENGTH_LONG).show();
-                    isConfirmMail = true;
+                if (AuthorisationActivity.isInternetAvailable(MainActivity.this)) {
+                    if (code.getText().toString().equals(CODE)) {
+                        code.setEnabled(false);
+                        mail.setEnabled(false);
+                        check_code_button.setEnabled(false);
+                        send_code.setEnabled(false);
+                        Toast.makeText(getApplicationContext(), "Почта подтверждена!", Toast.LENGTH_LONG).show();
+                        isConfirmMail = true;
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Неверно введен код!", Toast.LENGTH_LONG).show();
+                        code.setText("");
+                    }
                 }
-                else {
-                    Toast.makeText(getApplicationContext(), "Неверно введен код!", Toast.LENGTH_LONG).show();
-                    code.setText("");
-                }
+                else
+                    Toast.makeText(getApplicationContext(), "Проверьте подключение к сети", Toast.LENGTH_LONG).show();
             }
         });
     }

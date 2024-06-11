@@ -14,83 +14,84 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/laundry_App"
+            android:layout_margin="10dp"
 
-            android:textSize="30sp"
+            android:text="@string/laundry_App"
             android:textColor="@android:color/white"
+            android:textSize="20sp"
             app:layout_collapseMode="pin"
-            android:layout_margin="10dp"/>
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="12dp" />
 
         <ImageView
             android:id="@+id/slots"
-            android:layout_weight="50"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="50"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_name"
             android:maxWidth="30dp"
             android:maxHeight="30dp"
-            android:layout_marginTop="15dp"
-            android:contentDescription="@string/app_name"
             android:scaleType="fitStart"
-            android:adjustViewBounds="true"
-            android:layout_marginStart="10dp"
-            android:layout_gravity="center|center_horizontal"
-            android:src="@drawable/slots"
-            />
+            android:src="@drawable/slots" />
 
         <ImageView
             android:id="@+id/settings"
-            android:layout_weight="50"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="50"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_name"
             android:maxWidth="30dp"
             android:maxHeight="30dp"
-            android:layout_marginTop="15dp"
-            android:contentDescription="@string/app_name"
             android:scaleType="fitStart"
-            android:adjustViewBounds="true"
-            android:layout_marginStart="10dp"
-            android:layout_gravity="center|center_horizontal"
-            android:src="@drawable/settings"
-            />
+            android:src="@drawable/settings" />
+
         <ImageView
             android:id="@+id/profile"
-            android:layout_weight="50"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="50"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_name"
             android:maxWidth="30dp"
             android:maxHeight="30dp"
-            android:layout_marginTop="15dp"
-            android:contentDescription="@string/app_name"
             android:scaleType="fitStart"
-            android:layout_marginStart="10dp"
-            android:adjustViewBounds="true"
-            android:layout_gravity="center|center_horizontal"
-            android:src="@drawable/profile"
-            />
+            android:src="@drawable/profile" />
+
         <ImageView
             android:id="@+id/logout"
-            android:layout_weight="50"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:maxWidth="30dp"
-            android:maxHeight="30dp"
+            android:layout_gravity="center|center_horizontal"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
-            android:contentDescription="@string/app_name"
-            android:scaleType="fitStart"
+            android:layout_weight="50"
             android:adjustViewBounds="true"
-            android:layout_gravity="center|center_horizontal"
-            android:src="@drawable/logout"
-            />
+            android:contentDescription="@string/app_name"
+            android:maxWidth="30dp"
+            android:maxHeight="30dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/logout" />
     </androidx.appcompat.widget.Toolbar>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
