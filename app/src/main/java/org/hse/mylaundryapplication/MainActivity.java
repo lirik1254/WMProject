@@ -319,6 +319,8 @@ public class MainActivity extends AppCompatActivity {
                 for(DataSnapshot ds: datasnapshot.getChildren()) {
                     Users user = ds.getValue(Users.class);
                     assert user != null;
+                    if (user.notifications == null)
+                        user.notifications = 0;
                     listData.add(user);
                 }
             }

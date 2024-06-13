@@ -102,7 +102,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Users updateUser = new Users(sharedPreferences.getString("first_name", "error"), sharedPreferences.getString("last_name", "error"),
                                 sharedPreferences.getString("pat_name", "error"), sharedPreferences.getString("password", "error"),
                                 sharedPreferences.getString("mail", "error"),
-                                sharedPreferences.getInt("dormitory", 1), sharedPreferences.getInt("notifications", 0));
+                                sharedPreferences.getInt("dormitory", 1), sharedPreferences.getInt("nots", 0));
                         int dormitory = 0;
                         switch (dormitoryList.getSelectedItem().toString()) {
                             case "Пермь, ул. Уинская, д. 34":
@@ -127,6 +127,7 @@ public class ProfileActivity extends AppCompatActivity {
                             editor.putString("first_name", first_name.getText().toString());
                             editor.putString("last_name", last_name.getText().toString());
                             editor.putString("pat_name", pat_name.getText().toString());
+                            editor.apply();
                             try {
                                 editor.putString("password", MainActivity.hashPass(pass1.getText().toString()));
                             } catch (NoSuchAlgorithmException e) {
@@ -135,7 +136,7 @@ public class ProfileActivity extends AppCompatActivity {
                             Users updateUser = new Users(sharedPreferences.getString("first_name", "error"), sharedPreferences.getString("last_name", "error"),
                                     sharedPreferences.getString("pat_name", "error"), sharedPreferences.getString("password", "error"),
                                     sharedPreferences.getString("mail", "error"),
-                                    sharedPreferences.getInt("dormitory", 1), sharedPreferences.getInt("notifications", 0));
+                                    sharedPreferences.getInt("dormitory", 1), sharedPreferences.getInt("nots", 0));
                             int dormitory = 0;
                             switch (dormitoryList.getSelectedItem().toString()) {
                                 case "Пермь, ул. Уинская, д. 34":
@@ -159,6 +160,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                             editor.putInt("dormitory", updateUser.dormitory);
                             editor.putString("password", updateUser.password);
+                            editor.apply();
 
                             WMDataBase.child(updateUser.mail).setValue(updateUser);
                             Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();

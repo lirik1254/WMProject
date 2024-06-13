@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">PHSE Laundry</string>
 
     <string name="timetable_for_hse_fe">Timetable for HSE FE</string>
     <string name="register">Регистрация студента!</string>

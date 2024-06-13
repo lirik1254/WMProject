@@ -124,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Изменения сохранены!", Toast.LENGTH_LONG).show();
                     SharedPreferences sharedPreferences = SettingsActivity.this.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putInt("nots", nots);
+                    editor.putInt("nots", listData.get(0).notifications);
                     editor.putBoolean("isChecked", notificationToggler.isChecked());
                     editor.apply();
                 }

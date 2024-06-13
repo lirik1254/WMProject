@@ -14,6 +14,10 @@ public class Users {
         this.password = password;
         this.mail = mail;
         this.dormitory = dormitory;
-        this.notifications = notifications;
+        if (notifications == null) {
+            this.notifications = 0;
+        }
+        else
+            this.notifications = notifications;
     }
 }

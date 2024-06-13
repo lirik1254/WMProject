@@ -89,6 +89,8 @@ public class SlotsActivity extends AppCompatActivity {
         if (!AuthorisationActivity.isInternetAvailable(SlotsActivity.this))
             Toast.makeText(getApplicationContext(), "Проверьте подключение к сети..", Toast.LENGTH_LONG).show();
         chosen_slot = findViewById(R.id.chosen_slot);
+        chosen_slot.setText("Вы не записаны на сегодня!");
+        chosen_slot.setVisibility(View.VISIBLE);
         delete_slot = findViewById(R.id.reset_chosen_slot);
         logout = findViewById(R.id.logout);
 
@@ -107,7 +109,6 @@ public class SlotsActivity extends AppCompatActivity {
         WMDataBaseWM = FirebaseDatabase.getInstance().getReference().child(WASHING_MACHINES_KEY);
         WMDataBaseSlots = FirebaseDatabase.getInstance().getReference().child(SLOTS_KEY);
         getUserFromDB();
-        chosen_slot.setVisibility(View.INVISIBLE);
         delete_slot.setVisibility(View.INVISIBLE);
         delete_slot.setActivated(false);
         delete_slot.setOnClickListener(new View.OnClickListener() {

@@ -160,7 +160,7 @@ public class AuthorisationActivity extends AppCompatActivity {
         editor.putString("mail", mail);
         editor.putString("last_name", last_name);
         editor.putInt("dormitory", dormitory);
-        editor.putInt("notifications", notifications);
+        editor.putInt("nots", notifications);
         editor.apply();
     }
 
