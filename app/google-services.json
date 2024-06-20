@@ -1,33 +1,14 @@
 {
   "project_info": {
-    "project_number": "308701870310",
-    "firebase_url": "https://wmdatabase-4cb7e-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "wmdatabase-4cb7e",
-    "storage_bucket": "wmdatabase-4cb7e.appspot.com"
+    "project_number": "954760764710",
+    "firebase_url": "https://postironiya-hse-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "postironiya-hse",
+    "storage_bucket": "postironiya-hse.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:308701870310:android:08b688fb574b0ac8ace327",
-        "android_client_info": {
-          "package_name": "com.example.myapplication"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBs2RfeBHIYcmrL_BAVnR0p2Un0aK5C7f4"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:308701870310:android:4d7aedbc6bde4b90ace327",
+        "mobilesdk_app_id": "1:954760764710:android:2a580157cbbc6d311135e7",
         "android_client_info": {
           "package_name": "org.hse.mylaundryapplication"
         }
@@ -35,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBs2RfeBHIYcmrL_BAVnR0p2Un0aK5C7f4"
+          "current_key": "AIzaSyDv9q7lzcFkoD6zAxVH_4gR3GHWWvA-jHA"
         }
       ],
       "services": {
