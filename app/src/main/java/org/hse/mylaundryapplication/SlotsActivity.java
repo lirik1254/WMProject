@@ -716,7 +716,7 @@ public class SlotsActivity extends AppCompatActivity {
         public Boolean user_does_not_laundry() {
             for (Slots s: slotsArray ){
                 if (s.user_id.equals(userId)) {
-                    Toast.makeText(this.context, "you alredy do laundry today", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.context, "Вы уже записаны на сегодня!", Toast.LENGTH_LONG).show();
                     Log.d("laundry", "false");
                     return false;
                 }
