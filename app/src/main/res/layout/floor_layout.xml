@@ -23,22 +23,25 @@
                 android:id="@+id/floor"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                app:layout_constraintBottom_toTopOf="@id/floor_text"
-                android:textSize="40sp"
                 android:layout_margin="7dp"
+                android:layout_weight="1"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
+                android:textSize="40sp"
+                app:layout_constraintBottom_toTopOf="@id/floor_text"
                 tools:text="3" />
 
             <TextView
                 android:id="@+id/floor_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="2dp"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
                 app:layout_constraintBottom_toBottomOf="@id/time_layout"
                 app:layout_constraintTop_toBottomOf="@id/end"
-                tools:text="этаж"
-                android:layout_marginStart="2dp"
-                android:layout_gravity="center_horizontal"
-                />
+                tools:text="этаж" />
         </LinearLayout>
 
         <TextView
@@ -62,6 +65,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:text="@string/time1"
+                    android:textColor="#FFFFFF"
                     android:textSize="11sp" />
 
                 <Button
@@ -71,6 +75,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:text="@string/time2"
+                    android:textColor="#FFFFFF"
                     android:textSize="11sp" />
 
                 <Button
@@ -80,6 +85,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:text="@string/time3"
+                    android:textColor="#FFFFFF"
                     android:textSize="11sp" />
             </TableRow>
             <TableRow>
@@ -91,6 +97,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:text="@string/time4"
+                    android:textColor="#FFFFFF"
                     android:textSize="11sp" />
 
                 <Button
@@ -100,6 +107,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:text="@string/time5"
+                    android:textColor="#FFFFFF"
                     android:textSize="11sp" />
 
                 <Button
@@ -109,6 +117,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:text="@string/time6"
+                    android:textColor="#FFFFFF"
                     android:textSize="11sp" />
             </TableRow>
         </TableLayout>

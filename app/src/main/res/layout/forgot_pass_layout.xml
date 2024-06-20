@@ -68,15 +68,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:width="200dp"
                 android:inputType="text"
                 android:minHeight="48dp"
+                android:textColor="#000000"
+                android:textColorHighlight="#000000"
+                android:textColorHint="#000000"
                 tools:text="mmgolovanova@edu.hse.ru" />
 
             <Button
                 android:id="@+id/send_code"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="@string/code_button" />
+                android:text="@string/code_button"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
@@ -101,13 +107,16 @@
                 android:layout_weight="1"
                 android:inputType="text"
                 android:minHeight="48dp"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
                 tools:text="23567code" />
 
             <Button
                 android:id="@+id/check_code_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Проверить" />
+                android:text="Проверить"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
     </LinearLayout>
 
@@ -130,8 +139,8 @@
             android:theme="@style/MyTextStyle" />
 
         <LinearLayout
-            android:layout_width="336dp"
-            android:layout_height="122dp"
+            android:layout_width="335dp"
+            android:layout_height="147dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -145,11 +154,13 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:minHeight="30dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#000000"
                     tools:text="Введите код" />
 
                 <TextView
                     android:id="@+id/textView"
-                    android:layout_width="match_parent"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:text="Введите подтверждение пароля"
@@ -161,6 +172,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:minHeight="30dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#000000"
                     tools:text="Введите код" />
 
             </LinearLayout>
@@ -185,6 +198,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Установить новый пароль"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

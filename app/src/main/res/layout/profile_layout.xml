@@ -60,12 +60,14 @@
                         android:layout_margin="5dp" />
 
                     <EditText
-                        android:layout_height="wrap_content"
-                        android:minHeight="30dp"
                         android:id="@+id/last_name"
-                        tools:text="Голованова"
                         android:layout_width="match_parent"
-                        android:inputType="text" />
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:minHeight="30dp"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
+                        tools:text="Голованова" />
 
                     <TextView
                         android:id="@+id/name_label"
@@ -76,12 +78,14 @@
                         android:layout_margin="5dp" />
 
                     <EditText
-                        android:layout_height="wrap_content"
-                        android:minHeight="30dp"
                         android:id="@+id/first_name"
-                        tools:text="Мария"
                         android:layout_width="match_parent"
-                        android:inputType="text" />
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:minHeight="30dp"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
+                        tools:text="Мария" />
 
                     <TextView
                         android:id="@+id/pat_name_label"
@@ -92,11 +96,13 @@
                         android:layout_margin="5dp" />
 
                     <EditText
-                        android:layout_height="wrap_content"
-                        android:minHeight="30dp"
                         android:id="@+id/pat_name"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:inputType="text"
+                        android:minHeight="30dp"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
                         tools:text="Михайловна" />
                 </LinearLayout>
             </LinearLayout>
@@ -128,6 +134,8 @@
                         android:layout_margin="5dp"
                         android:layout_weight="70"
                         android:minHeight="30dp"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
                         tools:text="mmgolovanova@edu.hse.ru" />
                 </LinearLayout>
             </LinearLayout>
@@ -179,6 +187,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="textPassword"
                             android:minHeight="30dp"
+                            android:textColor="#000000"
+                            android:textColorHint="#000000"
                             tools:text="Введите код" />
 
                         <TextView
@@ -195,6 +205,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="textPassword"
                             android:minHeight="30dp"
+                            android:textColor="#000000"
+                            android:textColorHint="#000000"
                             tools:text="Введите код" />
                     </LinearLayout>
 
@@ -223,7 +235,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp"
-                    android:text="@string/save_button" />
+                    android:text="@string/save_button"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,10 +12,12 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -199,7 +202,17 @@ public class MainActivity extends AppCompatActivity {
         code = findViewById(R.id.code_mail);
         check_code_button = findViewById(R.id.check_code_button);
         spinner = findViewById(R.id.groupList);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dormitory_names, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.dormitory_names)) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // Получаем стандартное представление элемента
+                View view = super.getView(position, convertView, parent);
+                // Изменяем цвет текста
+                ((TextView) view).setTextColor(Color.BLACK);
+                return view;
+            }
+
+        };
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }

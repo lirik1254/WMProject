@@ -7,8 +7,8 @@
     android:background="@color/white">
 
     <LinearLayout
-        android:layout_width="302dp"
-        android:layout_height="211dp"
+        android:layout_width="315dp"
+        android:layout_height="268dp"
         android:minWidth="300dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,6 +31,8 @@
             android:inputType="text"
             android:minHeight="30dp"
 
+            android:textColor="#000000"
+            android:textColorHint="#000000"
             tools:text="mmgolovanova@edu.hse.ru" />
 
         <TextView
@@ -54,6 +56,8 @@
                 android:inputType="text|textPassword"
                 android:minHeight="30dp"
 
+                android:textColor="#000000"
+                android:textColorHint="#000000"
                 tools:text="Введите код" />
 
             <ImageButton
@@ -74,7 +78,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/login_button" />
+            android:text="@string/login_button"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

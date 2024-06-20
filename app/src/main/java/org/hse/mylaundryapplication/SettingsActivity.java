@@ -8,9 +8,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -85,7 +89,19 @@ public class SettingsActivity extends AppCompatActivity {
         profile = findViewById(R.id.profile);
         spinner = findViewById(R.id.groupList);
         save_button = findViewById(R.id.save_button);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Arrays.stream(timeArray).toArray());
+        List<Integer> timeList = Arrays.asList(timeArray);
+
+// Создаем адаптер с черным цветом текста для элементов Spinner
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, timeList) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // Получаем стандартное представление элемента
+                View view = super.getView(position, convertView, parent);
+                // Изменяем цвет текста на черный
+                ((TextView) view).setTextColor(Color.BLACK);
+                return view;
+            }
+        };
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         WMDataBaseUsers = FirebaseDatabase.getInstance().getReference().child(USERS_KEY);

@@ -3,9 +3,11 @@ package org.hse.mylaundryapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -200,7 +202,17 @@ public class ProfileActivity extends AppCompatActivity {
         pat_name = findViewById(R.id.pat_name);
         mail = findViewById(R.id.mail);
         dormitoryList = findViewById(R.id.groupList);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dormitory_names, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.dormitory_names)) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // Получаем стандартное представление элемента
+                View view = super.getView(position, convertView, parent);
+                // Изменяем цвет текста
+                ((TextView) view).setTextColor(Color.BLACK);
+                return view;
+            }
+
+        };
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dormitoryList.setAdapter(adapter);
         pass1 = findViewById(R.id.pass_1);

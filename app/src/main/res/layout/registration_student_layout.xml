@@ -81,6 +81,8 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:minHeight="48dp"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
                         tools:text="Голованова" />
 
                     <TextView
@@ -98,6 +100,8 @@
                         android:inputType="text"
                         android:minHeight="48dp"
 
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
                         tools:text="Мария" />
 
                     <TextView
@@ -114,6 +118,8 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:minHeight="48dp"
+                        android:textColor="#000000"
+                        android:textColorHint="#000000"
                         tools:text="Михайловна" />
 
                 </LinearLayout>
@@ -156,6 +162,8 @@
                             android:inputType="text"
                             android:minHeight="48dp"
 
+                            android:textColor="#000000"
+                            android:textColorHint="#000000"
                             tools:text="mmgolovanova@edu.hse.ru" />
 
                         <Button
@@ -164,16 +172,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="0"
-                            android:text="@string/code_button" />
+                            android:text="@string/code_button"
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="299dp"
-                        android:layout_height="87dp"
+                        android:layout_width="303dp"
+                        android:layout_height="103dp"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="272dp"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
 
@@ -187,25 +196,29 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="58dp"
+                                android:layout_height="77dp"
                                 android:orientation="horizontal">
 
                                 <EditText
                                     android:id="@+id/code_mail"
                                     android:layout_width="27dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="64dp"
                                     android:layout_weight="70"
                                     android:inputType="text"
                                     android:minWidth="100dp"
                                     android:minHeight="48dp"
+                                    android:textColor="#000000"
+                                    android:textColorHint="#000000"
                                     tools:text="23567code" />
 
                                 <Button
                                     android:id="@+id/check_code_button"
                                     android:layout_width="58dp"
-                                    android:layout_height="38dp"
+                                    android:layout_height="wrap_content"
                                     android:layout_weight="70"
-                                    android:text="Проверить" />
+                                    android:text="Проверить"
+                                    android:textAlignment="center"
+                                    android:textColor="#FFFFFF" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -226,6 +239,7 @@
 
                 <Spinner
                     android:id="@+id/groupList"
+                    style="@style/SpinnerTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -243,7 +257,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="117dp"
+                    android:layout_height="146dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -259,6 +273,8 @@
                             android:layout_weight="70"
                             android:inputType="textPassword"
                             android:minHeight="30dp"
+                            android:textColor="#000000"
+                            android:textColorHint="#000000"
                             tools:text="Введите код" />
 
                         <TextView
@@ -277,6 +293,8 @@
                             android:layout_weight="70"
                             android:inputType="textPassword"
                             android:minHeight="30dp"
+                            android:textColor="#000000"
+                            android:textColorHint="#000000"
                             tools:text="Введите код" />
                     </LinearLayout>
 
@@ -306,7 +324,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/register_button" />
+                    android:text="@string/register_button"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
         </LinearLayout>

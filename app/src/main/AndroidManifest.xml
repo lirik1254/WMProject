@@ -21,10 +21,12 @@
         tools:targetApi="31">
         <activity
             android:name=".ProfileActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ForgotPassActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".NotificationReceiver"
@@ -33,7 +35,8 @@
         <activity
             android:name=".AuthorisationActivity"
             android:exported="true"
-            android:theme="@style/Theme.Base_project">
+            android:theme="@style/Theme.Base_project"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,15 +45,18 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SlotsActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SettingsActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
