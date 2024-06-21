@@ -214,13 +214,15 @@ public class SettingsActivity extends AppCompatActivity {
             user.notifications=0;
             WMDataBaseUsers.child(userId).setValue(user);
         }
+        Log.d("lflflfl", String.valueOf(timeArray[spinner.getSelectedItemPosition()]));
         if (notificationToggler.isChecked()) {
-            if (nots!=(Integer)adapter.getItem(spinner.getSelectedItemPosition())){
-                user.notifications=(Integer)adapter.getItem(spinner.getSelectedItemPosition());
+            if (nots!=timeArray[spinner.getSelectedItemPosition()]){
+                user.notifications = timeArray[spinner.getSelectedItemPosition()];
                 WMDataBaseUsers.child(userId).setValue(user);
             }
         }
     }
+
     public  void getNotificationTime() {
         nots = listData.get(0).notifications;
         if (nots>0) {
