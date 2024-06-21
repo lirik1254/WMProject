@@ -195,6 +195,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (!AuthorisationActivity.isInternetAvailable(SettingsActivity.this)) {
             notificationToggler.setChecked(sharedPreferences.getBoolean("isChecked", false));
             spinner.setSelection(Arrays.asList(timeArray).indexOf(sharedPreferences.getInt("nots", 5)));
+
         }
     }
     private void Settings() {
@@ -214,9 +215,10 @@ public class SettingsActivity extends AppCompatActivity {
             user.notifications=0;
             WMDataBaseUsers.child(userId).setValue(user);
         }
+        Log.d("lflflfl", String.valueOf(timeArray[spinner.getSelectedItemPosition()]));
         if (notificationToggler.isChecked()) {
-            if (nots!=(Integer)adapter.getItem(spinner.getSelectedItemPosition())){
-                user.notifications=(Integer)adapter.getItem(spinner.getSelectedItemPosition());
+            if (nots!=timeArray[spinner.getSelectedItemPosition()]){
+                user.notifications = timeArray[spinner.getSelectedItemPosition()];
                 WMDataBaseUsers.child(userId).setValue(user);
             }
         }
@@ -227,7 +229,6 @@ public class SettingsActivity extends AppCompatActivity {
             notificationToggler.setChecked(true);
             if (nots==5) {
                 spinner.setSelection(0);
-
             }
             if (nots==10) {
                 spinner.setSelection(1);
@@ -246,7 +247,6 @@ public class SettingsActivity extends AppCompatActivity {
             notificationToggler.setChecked(false);
         }
         getSlotsFromDB();
-
     }
 
     public void getSlotsFromDB() {
